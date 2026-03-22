@@ -41,12 +41,30 @@
     department: "某学院",
     department-en: "School of XX",
     major: "某专业",
-    major-en: "XX Major",
+    major-en: "XX",
     supervisor: ("李四", "教授"),
     supervisor-en: "Professor Li Si",
     // supervisor-ii: ("王五", "副教授"),
     // supervisor-ii-en: "Professor Wang Wu",
     submit-date: datetime.today(),
+    // 评阅人名单
+    reviewers: (
+      (name: "张某某", title: "教授", unit: "西北工业大学"),
+      (name: "李某某", title: "教授", unit: "西安交通大学"),
+      (name: "王某某", title: "教授", unit: "西安电子科技大学"),
+    ),
+    // 答辩委员会信息
+    defence-committee: (
+      date: datetime(year: 2024, month: 6, day: 1),
+      members: (
+        (role: "主席", name: "赵某某", title: "教授", unit: "西北工业大学"),
+        (role: "委员", name: "钱某某", title: "教授", unit: "西安交通大学"),
+        (role: "委员", name: "孙某某", title: "教授", unit: "西安电子科技大学"),
+        (role: "委员", name: "周某某", title: "教授", unit: "西北工业大学"),
+        (role: "委员", name: "吴某某", title: "副教授", unit: "西北工业大学"),
+        (role: "秘书", name: "郑某某", title: "讲师", unit: "西北工业大学"),
+      ),
+    ),
   ),
   // 参考文献源
   bibliography: bibliography.with("ref.bib"),

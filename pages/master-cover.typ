@@ -326,17 +326,12 @@
   v(0pt)
   [For The Degree of]
   v(0pt)
-  let degree-en-text = if info.degree-en == auto {
-    if doctype == "doctor" { "Philosophy" } else { "Engineering" }
-  } else {
-    info.degree-en
-  }
-
-  let degree-title = if doctype == "doctor" { "Doctor of " + degree-en-text } else { "Master of " + degree-en-text }
+  let degree-title = if doctype == "doctor" { "Doctor of " } else { "Master of " }
   if doctype == "doctor" {
-    text(weight: "bold", degree-title + "  " + info.major-en)
+    text(degree-title)
+    text(weight: "bold", info.major-en)
   } else {
-    text(degree-title + " in " + info.major-en)
+    text(degree-title + info.major-en)
   }
 
   v(4 * 14pt * 1.4) // 约 78pt
@@ -363,41 +358,43 @@
   v(1 * 22pt * 1.2) // 约 26pt
 
   align(center)[
+    #set text(font: fonts.宋体, size: 字号.小四)
     #text(font: fonts.黑体, size: 字号.四号)[学位论文评阅人名单]
 
     #v(6pt)
 
     #table(
       columns: (3.71cm, 2.83cm, 8.73cm),
-      stroke: (x: stroke-width, y: stroke-width),
+      stroke: none,
       inset: (x: 4pt, y: 8pt),
       align: center,
       [*姓名*], [*职称*], [*工作单位*],
-      table.cell(colspan: 3, [（评阅人信息待填写）]),
+      ..info.reviewers.map(r => ([#r.name], [#r.title], [#r.unit])).flatten(),
     )
   ]
 
   // 答辩委员会表格
-  v(1 * 22pt * 1.2) // 约 26pt
+  v(3 * 22pt * 1.2) // 约 26pt
+
+  // 处理答辩日期
+  let defence-date-display = if type(info.defence-committee.date) == datetime {
+    info.defence-committee.date.display("[year] 年 [month] 月 [day] 日")
+  } else {
+    info.defence-committee.date
+  }
 
   align(center)[
+    #set text(font: fonts.宋体, size: 字号.小四)
     #text(font: fonts.黑体, size: 字号.四号)[答辩委员会名单]
-
-    #v(-8pt)
 
     #table(
       columns: (3.76cm, 2.68cm, 2.25cm, 6.75cm),
-      stroke: (x: stroke-width, y: stroke-width),
+      stroke: none,
       inset: (x: 4pt, y: 8pt),
       align: center,
-      [*答辩日期*], table.cell(colspan: 3, [20XX 年 XX 月 XX 日]),
+      [*答辩日期*], table.cell(colspan: 3, [#defence-date-display]),
       [*答辩委员会*], [*姓名*], [*职称*], [*工作单位*],
-      [*主席*], [ ], [ ], [ ],
-      [*委员*], [ ], [ ], [ ],
-      [*委员*], [ ], [ ], [ ],
-      [*委员*], [ ], [ ], [ ],
-      [*委员*], [ ], [ ], [ ],
-      [*秘书*], [ ], [ ], [ ],
+      ..info.defence-committee.members.map(m => ([*#m.role*], [#m.name], [#m.title], [#m.unit])).flatten(),
     )
   ]
 }
