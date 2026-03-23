@@ -1,16 +1,11 @@
 #import "../lib.typ": documentclass
 
-// 你首先应该安装 https://github.com/nju-lug/modern-nju-thesis/tree/main/fonts/FangZheng 里的所有字体，
-// 如果是 Web App 上编辑，你应该手动上传这些字体文件，否则不能正常使用「楷体」和「仿宋」，导致显示错误。
-
 #let (
-  // 布局函数
   twoside,
   doc,
   preface,
   mainmatter,
   appendix,
-  // 页面函数
   fonts-display-page,
   cover,
   decl-page,
@@ -28,10 +23,7 @@
   doctype: "master", // "bachelor" | "master" | "doctor" | "postdoc", 文档类型，默认为本科生 bachelor
   // degree: "academic",  // "academic" | "professional", 学位类型，默认为学术型 academic
   // anonymous: true,  // 盲审模式
-  twoside: true, // 双面模式，会加入空白页，便于打印
-  // 你会发现 Typst 有许多警告，这是因为模板加入了很多不必要的 fallback 字体
-  // 你可以自定义字体消除警告，先英文字体后中文字体，应传入「宋体」、「黑体」、「楷体」、「仿宋」、「等宽」
-  // fonts: (楷体: (name: "Times New Roman", covers: "latin-in-cjk"), "FZKai-Z03S")),
+  twoside: true,
   info: (
     title: ("基于 Typst 的", "西北工业大学学位论文"),
     title-en: "My Title in English",
@@ -44,9 +36,7 @@
     major: "某专业",
     major-en: "XX",
     supervisor: ("李四", "教授"),
-    supervisor-en: "Professor Li Si",
-    // supervisor-ii: ("王五", "副教授"),
-    // supervisor-ii-en: "Professor Wang Wu",
+    supervisor-en: "Li Si",
     submit-date: datetime.today(),
     // 评阅人名单
     reviewers: (
@@ -74,15 +64,8 @@
 // 文稿设置
 #show: doc
 
-// // 字体展示测试页
-// #fonts-display-page()
-
 // 封面页
 #cover()
-
-// // 声明页
-// #decl-page()
-
 
 // 前言
 #show: preface
@@ -105,10 +88,7 @@
 // 目录
 #outline-page()
 
-// 调试：显示目录结束后的页码
-// #context { text("目录结束页码: " + str(here().page())) }
-
-// 正文
+// 图目录
 // #list-of-figures()
 
 // 表格目录
@@ -260,9 +240,9 @@ $ F_n = floor(1 / sqrt(5) phi.alt^n) $
 // 附录
 #appendix[
 
-= 附　录
+  = 附　录
 
-附录内容。
+  附录内容。
 ]
 
 #pagebreak()
