@@ -15,6 +15,7 @@
   anonymous-info-keys: ("author-en", "supervisor-en", "supervisor-ii-en"),
   leading: 1.5em,
   spacing: 1.5em,
+  funding: "The present work is supported by the XXX (Project No.xxx)",
   body,
 ) = {
   fonts = 字体 + fonts
@@ -25,7 +26,8 @@
       department-en: "XX School",
       major-en: "XX",
       supervisor-en: "Li Si",
-    ) + info
+    )
+      + info
   )
 
   if type(info.title-en) == str {
@@ -56,6 +58,13 @@
     #v(1em)
     #text(size: 字号.小四)[
       #strong[Key words:] #(("",) + keywords.intersperse("; ")).sum()
+    ]
+
+    #v(1fr)
+
+    #if funding != none [
+      #set par(leading: 1.4em)
+      #text(font: "Times New Roman", size: 字号.五号)[#funding]
     ]
   ]
 }
