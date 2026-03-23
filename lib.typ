@@ -39,6 +39,7 @@
   degree: "academic", // "academic" | "professional"，学位类型，默认为学术型 academic
   nl-cover: false, // TODO: 是否使用国家图书馆封面，默认关闭
   twoside: true, // 双面模式，会加入空白页，便于打印
+  colored-cover: false, // 是否开启彩色封面封底
   anonymous: false, // 盲审模式
   bibliography: none, // 原来的参考文献函数
   fonts: (:), // 字体，应传入「宋体」、「黑体」、「楷体」、「仿宋」、「等宽」
@@ -116,6 +117,8 @@
       doc(
         ..args,
         doctype: doctype,
+        degree: degree,
+        colored-cover: colored-cover,
         twoside: twoside,
         info: info + args.named().at("info", default: (:)),
       )
@@ -162,6 +165,7 @@
         master-cover(
           doctype: doctype,
           degree: degree,
+          colored-cover: colored-cover,
           nl-cover: nl-cover,
           anonymous: anonymous,
           twoside: twoside,

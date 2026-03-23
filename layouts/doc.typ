@@ -6,6 +6,8 @@
   // documentclass 传入参数
   info: (:),
   doctype: "bachelor",
+  degree: "academic",
+  colored-cover: false,
   fonts: (:),
   // 其他参数
   fallback: false, // 字体缺失时使用 fallback，帮助诊断字体问题
@@ -64,4 +66,18 @@
   )
 
   it
+
+  if colored-cover and (doctype == "master" or doctype == "doctor") {
+    let bg = if doctype == "doctor" {
+      "../template/images/博士论文封底.jpg"
+    } else if degree == "professional" {
+      "../template/images/专硕论文封底.jpg"
+    } else {
+      "../template/images/学硕论文封底.jpg"
+    }
+    // 保证封底单独在一页
+    pagebreak(weak: true)
+    set page(background: image(bg, width: 100%, height: 100%), margin: 0pt, header: none, footer: none)
+    place(dx: 0pt, dy: 0pt)[#box(width: 100%, height: 100%)]
+  }
 }

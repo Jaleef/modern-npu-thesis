@@ -8,6 +8,7 @@
   // documentclass 传入的参数
   doctype: "master",
   degree: "academic",
+  colored-cover: false,
   nl-cover: false,
   anonymous: false,
   twoside: false,
@@ -122,6 +123,19 @@
   // ========================================
   pagebreak(weak: true, to: if twoside { "odd" })
 
+  let bg = none
+  if colored-cover {
+    let cover-image-path = if doctype == "doctor" {
+      "../template/images/博士论文封面.jpg"
+    } else if degree == "professional" {
+      "../template/images/专硕论文封面.jpg"
+    } else {
+      "../template/images/学硕论文封面.jpg"
+    }
+    bg = image(cover-image-path, width: 100%, height: 100%, format: "png")
+  }
+  set page(background: bg)
+
   // 设置外封页默认字体
   set text(font: fonts.宋体, size: 字号.五号)
 
@@ -209,6 +223,7 @@
   // ========================================
   // 第二页 - 内封（简洁居中形式）
   // ========================================
+  set page(background: none)
   pagebreak(weak: true, to: if twoside { "odd" })
 
   set align(center)

@@ -23,10 +23,10 @@
   doctype: "master", // "bachelor" | "master" | "doctor",
   degree: "professional", // "academic" | "professional", 学位类型
   anonymous: false, // 是否开启盲审模式
+  colored-cover: true,
   info: (
     title: ("基于 Typst 的", "西北工业大学学位论文"),
     title-en: "My Title in English",
-    grade: "20XX",
     student-id: "1234567890",
     clc: "TP311.1", // 分类号
     author: "航小天",
