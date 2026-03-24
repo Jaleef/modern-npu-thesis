@@ -1,0 +1,57 @@
+name: Render thesis
+
+on:
+  push:
+    paths:
+      - ".github/workflows/render-thesis.yml"
+      - ".github/typst-packages.typ"
+      - "template/**"
+      - "layouts/**"
+      - "pages/**"
+      - "utils/**"
+      - "fonts/**"
+      - "lib.typ"
+      - "typst.toml"
+      - "README.md"
+  pull_request:
+    paths:
+      - ".github/workflows/render-thesis.yml"
+      - ".github/typst-packages.typ"
+      - "template/**"
+      - "layouts/**"
+      - "pages/**"
+      - "utils/**"
+      - "fonts/**"
+      - "lib.typ"
+      - "typst.toml"
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v4
+        with:
+          typst-version: 0.14.2
+          cache-dependency-path: .github/typst-packages.typ
+
+      - name: Create output directory
+        run: mkdir -p dist
+
+      - name: Compile thesis
+        run: typst compile --font-path fonts template/thesis.typ dist/thesis.pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: thesis-pdf
+          path: dist/thesis.pdf
