@@ -36,8 +36,8 @@
   reset-footnote: true,
   // caption 的 separator
   separator: "  ",
-  // caption 样式
-  caption-style: strong,
+  // caption 样式（宋体五号不加粗）
+  caption-style: it => it,
   caption-size: 字号.五号,
   // figure 计数
   show-figure: i-figured.show-figure.with(numbering: "1-1"),
@@ -104,6 +104,8 @@
   set figure.caption(separator: separator)
   show figure.caption: caption-style
   show figure.caption: set text(font: fonts.宋体, size: 字号.五号)
+  // figure 内部文本（如子图标题）使用宋体五号
+  show figure: set text(font: fonts.宋体, size: 字号.五号)
   // 表格内容使用五号字体
   show table: set text(font: fonts.宋体, size: 字号.五号)
   // 4.6 优化列表显示

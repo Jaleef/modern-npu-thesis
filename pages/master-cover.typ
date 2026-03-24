@@ -192,7 +192,7 @@
   ]
 
   // 题目区域（两行两列表格）
-  v(21 * 10.5pt * 1.1)
+  v(21 * 10.5pt * 1.05)
 
   align(center)[
     #set text(font: fonts.黑体, size: 字号.二号, weight: "bold")
@@ -200,8 +200,7 @@
       columns: (2.34cm, 12.13cm),
       rows: (1.45cm, 1.45cm),
       stroke: none,
-      inset: (x: 0pt, y: 4pt),
-      align: (center + horizon, center + horizon),
+      align: (center + bottom, center + bottom),
       // 第一行：题目 + 题目第一行
       [题目], table.cell(stroke: (bottom: stroke-width), [#info.title.at(0, default: "")]),
       // 第二行：空 + 题目第二行
@@ -209,7 +208,7 @@
     )
   ]
 
-  v(2 * 10.5pt * 1.15)
+  v(2 * 10.5pt * 1.02)
 
   // 作者（一行两列表格，只保留第二列下框线）
   align(center)[
@@ -226,7 +225,7 @@
     )
   ]
 
-  v(3 * 10.5pt * 1.15)
+  v(3 * 10.5pt * 1.06)
 
   // 详细信息表格（四行两列）
   let major-row-label = if degree == "professional" { "专 业 领 域" } else { "学 科 专 业" }
@@ -262,21 +261,19 @@
 
   set align(center)
 
-  v(1 * 10.5pt * 1.4) // 约 15pt
+  v(6 * 10.5pt * 1.4) // 约 15pt
 
   // 校名
   text(size: 字号.三号, font: fonts.宋体, weight: "regular")[
     西 北 工 业 大 学
   ]
 
-  v(5mm)
+  v(0mm)
 
   // 学位论文类型
   text(size: 字号.一号, font: fonts.宋体, weight: "regular")[
     #if doctype == "doctor" { "博 士 学 位 论 文" } else { "硕 士 学 位 论 文" }
   ]
-
-  v(5mm)
 
   v(6 * 14pt * 1.5) // 约 126pt
 
@@ -285,7 +282,7 @@
 
   align(center)[
     #table(
-      columns: (2.34cm, 12.13cm),
+      columns: (2.34cm, 9.13cm),
       rows: (1.45cm, 1.45cm),
       stroke: none,
       inset: (x: 0pt, y: 4pt),
@@ -305,7 +302,7 @@
   let max-name-len = calc.max(author-name.clusters().len(), supervisor-name.clusters().len())
 
 
-  v(6 * 10.5pt * 1.5) // 约 94pt
+  v(5 * 10.5pt * 1.4) // 约 94pt
 
   // 其他信息
   set text(font: fonts.宋体, size: 字号.三号)
@@ -329,7 +326,7 @@
     )
   ]
 
-  v(2 * 10.5pt * 1.5) // 约 31pt
+  v(2 * 10.5pt * 1.6) // 约 31pt
 
   // 日期
   text(font: fonts.宋体, size: 字号.三号, datetime-year-month(info.submit-date))
@@ -352,7 +349,7 @@
   set text(font: fonts.宋体, size: 字号.小四)
   set par(leading: 1.5em)
 
-  v(3 * 14pt * 1.4) // 约 59pt
+  v(5 * 14pt * 1.4) // 约 59pt
 
   // 标题
   set text(font: fonts.宋体, size: 字号.二号)
@@ -365,11 +362,11 @@
   set text(font: "Times New Roman", size: 字号.小三)
   text(weight: "bold")[By]
 
-  v(0pt)
+  v(-7pt)
 
   text(weight: "regular", anonymous-text("author-en", info.author-en))
 
-  v(0pt)
+  v(-7pt)
 
   // 中文学术职称到英文的映射
   let title-en-map = (
@@ -382,7 +379,7 @@
   let supervisor-title-en = title-en-map.at(info.supervisor.at(1, default: "教授"), default: "Professor")
 
   text(weight: "bold")[Under the Supervision of #supervisor-title-en]
-  v(0pt)
+  v(-7pt)
   text(anonymous-text("supervisor-en", { info.supervisor-en }))
 
   v(4 * 14pt * 1.4) // 约 78pt
@@ -390,15 +387,15 @@
   // 学位信息
   set text(font: "Times New Roman", size: 字号.小三)
   [A Dissertation Submitted to]
-  v(0pt)
+  v(-7pt)
   [Northwestern Polytechnical University]
 
   v(1 * 14pt * 1.4) // 约 20pt
 
   [In Partial Fulfillment of The Requirement]
-  v(0pt)
+  v(-7pt)
   [For The Degree of]
-  v(0pt)
+  v(-7pt)
   let degree-title = if doctype == "doctor" { "Doctor of " } else { "Master of " }
   if doctype == "doctor" {
     text(degree-title)
@@ -431,7 +428,7 @@
 
   set text(font: fonts.宋体, size: 字号.小四)
 
-  v(1 * 22pt * 1.2) // 约 26pt
+  v(2 * 18pt * 1.2) // 约 26pt
 
   // 页面标题
   align(center, text(font: fonts.黑体, size: 字号.三号)[学位论文评阅人和答辩委员会名单])
