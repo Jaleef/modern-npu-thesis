@@ -1,4 +1,4 @@
-# 西北工业大学学位论文 `nwputhesis-typst`
+﻿# 西北工业大学学位论文 `modern-npu-thesis`
 
 西北工业大学学位论文 Typst 模板。
 
@@ -20,7 +20,7 @@
 typst compile thesis.typ --font-path fonts
 ```
 
-如果你是在仓库里直接编译 [template/main.typ](template/main.typ)，还需要显式指定本地包缓存目录；否则 Typst 会尝试联网下载 `@preview/nwputhesis-typst:0.1.0`。
+如果你是在仓库里直接编译 [template/main.typ](template/main.typ)，还需要显式指定本地包缓存目录；否则 Typst 会尝试联网下载 `@preview/modern-npu-thesis:0.1.0`。
 
 ```bash
 typst compile --root . --package-cache-path .typst/packages --font-path fonts template/main.typ

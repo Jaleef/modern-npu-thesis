@@ -1,4 +1,4 @@
-﻿#import "@preview/nwputhesis-typst:0.1.0": nwpu-thesis
+﻿#import "@preview/modern-npu-thesis:0.1.0": nwpu-thesis
 
 #let thesis-config = (
   doctype: "master", // "bachelor" | "master" | "doctor",
