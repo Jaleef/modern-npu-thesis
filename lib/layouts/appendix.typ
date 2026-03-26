@@ -5,21 +5,26 @@
 // 后记，重置 heading 计数器
 #let appendix(
   fonts: (:),
-  numbering: custom-numbering.with(
-    first-level: n => context {
-      let appendix-headings = query(
-        selector(heading.where(level: 1)).after(selector(<appendix-start>)).before(selector(<appendix-end>)),
-      )
-      let appendix-prefix = if appendix-headings.len() > 1 {
-        "附录" + numbering("A", n)
+  numbering: (..nums) => context {
+    let pos = nums.pos()
+    let appendix-headings = query(
+      selector(heading.where(level: 1)).after(selector(<appendix-start>)).before(selector(<appendix-end>)),
+    )
+    let multi-appendix = appendix-headings.len() > 1
+
+    if pos.len() == 1 {
+      let appendix-prefix = if multi-appendix {
+        "附录" + numbering("A", ..pos)
       } else {
         "附　录"
       }
       [#appendix-prefix#h(1em)]
-    },
-    depth: 4,
-    "1.1 ",
-  ),
+    } else if multi-appendix {
+      numbering("A.1 ", ..pos)
+    } else {
+      numbering("1.1 ", ..pos)
+    }
+  },
   // figure 计数
   show-figure: i-figured.show-figure.with(numbering: "1-1"),
   // equation 计数

@@ -50,6 +50,11 @@
   ..args,
   it,
 ) = {
+  numbering = custom-numbering.with(
+    first-level: n => [第 #n 章#h(0.7em)],
+    depth: 4,
+    "1.1 ",
+  )
   // 1.  默认参数（提前初始化 fonts）
   fonts = 字体 + fonts
   if text-args == auto {
