@@ -1,65 +1,57 @@
-﻿#import "@preview/i-figured:0.2.4"
-#import "../utils/custom-numbering.typ": custom-numbering
+#import "@preview/i-figured:0.2.4"
 #import "../utils/style.typ": 字体
+#import "../utils/custom-numbering.typ": custom-numbering
 
-// 后记，重置 heading 计数器
+// 附录布局
 #let appendix(
+  twoside: false,
   fonts: (:),
-  numbering: (..nums) => context {
-    let pos = nums.pos()
-    let appendix-headings = query(
-      selector(heading.where(level: 1)).after(selector(<appendix-start>)).before(selector(<appendix-end>)),
-    )
-    let multi-appendix = appendix-headings.len() > 1
-
-    if pos.len() == 1 {
-      let appendix-prefix = if multi-appendix {
-        "附录" + numbering("A", ..pos)
-      } else {
-        "附　录"
-      }
-      [#appendix-prefix#h(1em)]
-    } else if multi-appendix {
-      numbering("A.1 ", ..pos)
-    } else {
-      numbering("1.1 ", ..pos)
-    }
-  },
-  // figure 计数
-  show-figure: i-figured.show-figure.with(numbering: "1-1"),
-  // equation 计数
-  show-equation: i-figured.show-equation.with(
-    numbering: (..nums) => text(font: "Times New Roman")[#numbering("(1-1)", ..nums)],
-  ),
   // 重置计数
   reset-counter: true,
   it,
 ) = {
   fonts = 字体 + fonts
 
-  let appendix-heading-font = (
-    (name: "Times New Roman", covers: "latin-in-cjk"),
-    "SimHei",
-    "Heiti SC",
-    "STHeiti",
-    "Noto Sans CJK SC",
-    "Source Han Sans SC",
-    "Source Han Sans",
-  )
+  pagebreak(weak: true, to: if twoside { "odd" })
 
-  set heading(numbering: numbering)
-  if reset-counter {
-    counter(heading).update(0)
+  context {
+    let appendix-headings = query(
+      selector(heading.where(level: 1)).after(selector(<appendix-start>)).before(selector(<appendix-end>)),
+    )
+    let multi-appendix = appendix-headings.len() > 1
+
+    let appendix-numbering = if multi-appendix {
+      custom-numbering.with(
+        first-level: n => [附录#numbering("A", n)#h(0.7em)],
+        depth: 4,
+        "A.1 ",
+      )
+    } else {
+      custom-numbering.with(
+        first-level: n => [附　录#h(0.7em)],
+        depth: 4,
+        "1.1 ",
+      )
+    }
+
+    set heading(numbering: appendix-numbering)
+    if reset-counter {
+      counter(heading).update(0)
+    }
+
+    show heading: i-figured.reset-counters
+    show figure: i-figured.show-figure.with(numbering: if multi-appendix { "A-1" } else { "1-1" })
+    show math.equation.where(block: true): i-figured.show-equation.with(
+      numbering: if multi-appendix { "(A-1)" } else { "(1-1)" },
+    )
+
+    [
+      #metadata(none) <appendix-start>
+      #it
+      #metadata(none) <appendix-end>
+      #if twoside {
+        pagebreak(weak: true, to: "even")
+      }
+    ]
   }
-
-  set text(font: fonts.宋体)
-  show heading: it => {
-    set text(font: appendix-heading-font)
-    it
-  }
-  show figure: show-figure
-  // 设置 equation 的编号
-  show math.equation.where(block: true): show-equation
-
-  [#metadata(none) <appendix-start>#it#metadata(none) <appendix-end>]
 }

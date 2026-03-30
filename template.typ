@@ -143,6 +143,7 @@
     },
     appendix: (..args) => {
       appendix(
+        twoside: twoside,
         ..args,
       )
     },

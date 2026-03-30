@@ -2,16 +2,25 @@
 
 #let algorithm-figure = figure.where(kind: "algorithm")
 
+#let algorithm-label(number, loc) = context {
+  let heading-number = counter(heading).at(loc).first()
+  let is-appendix = query(selector(<appendix-start>).before(loc)).len() > query(selector(<appendix-end>).before(loc)).len()
+  let is-multi-appendix = query(
+    selector(heading.where(level: 1)).after(selector(<appendix-start>)).before(selector(<appendix-end>)),
+  ).len() > 1
+  if is-appendix and is-multi-appendix {
+    [#numbering("A", heading-number)-#numbering("1", number)]
+  } else {
+    numbering("1-1", heading-number, number)
+  }
+}
+
 #let reset-algorithm-counter = it => {
   counter(algorithm-figure).update(0)
   it
 }
 
-#let algorithm-numbering(number) = context numbering(
-  "1-1",
-  counter(heading).get().first(),
-  number,
-)
+#let algorithm-numbering(number) = context algorithm-label(number, here())
 
 #let algorithm-step-rows(steps) = {
   let rows = ()
@@ -26,11 +35,7 @@
   let element = query(label).first()
   link(
     element.location(),
-    [算法 #numbering(
-        "1-1",
-        counter(heading).at(element.location()).first(),
-        counter(algorithm-figure).at(element.location()).first(),
-      )],
+    [算法 #algorithm-label(counter(algorithm-figure).at(element.location()).first(), element.location())],
   )
 }
 
