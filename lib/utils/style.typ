@@ -21,20 +21,33 @@
 #let 字体 = (
   // 宋体 - 优先使用 Windows 系统字体
   // SimSun（宋体）、Times New Roman（英文衬线）
-  宋体: ((name: "Times New Roman", covers: "latin-in-cjk"), "SimSun", "NSimSun", "Songti SC", "STSongti", "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif"),
-
+  宋体: (
+    (name: "Times New Roman", covers: "latin-in-cjk"),
+    "SimSun",
+    "NSimSun",
+    "Songti SC",
+    "STSongti",
+    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    "Source Han Serif",
+  ),
   // 黑体 - 优先使用 Windows 系统字体
   // SimHei（黑体）、Arial（英文无衬线）
-  黑体: ((name: "Arial", covers: "latin-in-cjk"), "SimHei", "Heiti SC", "STHeiti", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans"),
-
+  黑体: (
+    (name: "SimHei", covers: "latin-in-cjk"),
+    "SimHei",
+    "Heiti SC",
+    "STHeiti",
+    "Noto Sans CJK SC",
+    "Source Han Sans SC",
+    "Source Han Sans",
+  ),
   // 楷体 - 优先使用 Windows 系统字体
   // KaiTi（楷体）
   楷体: ((name: "Times New Roman", covers: "latin-in-cjk"), "KaiTi", "Kaiti SC", "STKaiti", "CESI_KT_GB18030"),
-
   // 仿宋 - 优先使用 Windows 系统字体
   // FangSong（仿宋）
   仿宋: ((name: "Times New Roman", covers: "latin-in-cjk"), "FangSong", "STFangSong", "FangSong SC"),
-
   // 等宽字体 - 优先使用 Windows 系统字体
   // Courier New（英文等宽）、SimHei（中文）
   等宽: ((name: "Courier New", covers: "latin-in-cjk"), "SimHei", "Noto Sans Mono CJK SC", "Source Han Sans HW SC"),
