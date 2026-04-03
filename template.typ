@@ -5,6 +5,7 @@
 #import "lib/layouts/appendix.typ": appendix
 #import "lib/utils/header.typ": add-blank-even-page
 #import "lib/utils/header.typ": break-to-odd-page
+#import "lib/utils/header.typ": graduate-header-title, header-render
 #import "lib/pages/bachelor-cover.typ": bachelor-cover
 #import "lib/pages/master-cover.typ": master-cover
 #import "lib/pages/bachelor-abstract.typ": bachelor-abstract
@@ -310,6 +311,8 @@
     if twoside {
       if has-more-content {
         pagebreak(to: "odd")
+      } else if colored-cover and (doctype == "master" or doctype == "doctor") {
+        []
       } else {
         pagebreak(to: "even")
       }
@@ -390,7 +393,56 @@
   if scan-declaration != none {
     page(margin: 0pt)[
       #scan-declaration
+      #box(width: 0pt, height: 0pt) <__nwpu_backmatter_end__>
     ]
+  } else {
+    [#box(width: 0pt, height: 0pt) <__nwpu_backmatter_end__>]
+  }
+
+  if colored-cover and (doctype == "master" or doctype == "doctor") {
+    let bg = if doctype == "doctor" {
+      "template/images/博士论文封底.jpg"
+    } else if degree == "professional" {
+      "template/images/专硕论文封底.jpg"
+    } else {
+      "template/images/学硕论文封底.jpg"
+    }
+    let back-margin = (top: 2.54cm, bottom: 2.54cm, left: 2.5cm, right: 2.5cm)
+    let parity-blank-page = page(
+      margin: back-margin,
+      header: header-render(graduate-header-title(doctype), fonts: cls.fonts),
+      footer: context align(center)[
+        #set text(size: 字号.小五)
+        #counter(page).display("1")
+      ],
+    )[
+      #box(width: 1pt, height: 1pt)
+    ]
+    let blank-back-page = page(margin: back-margin, background: none, header: none, footer: none)[
+      #box(width: 1pt, height: 1pt)
+    ]
+    let cover-back-page = page(
+      margin: 0pt,
+      background: image(bg, width: 100%, height: 100%),
+      header: none,
+      footer: none,
+    )[
+      #box(width: 1pt, height: 1pt)
+    ]
+
+    context {
+      let end-page = counter(page).at(<__nwpu_backmatter_end__>).first()
+
+      if calc.rem(end-page, 2) == 1 {
+        if scan-declaration != none {
+          blank-back-page
+        } else {
+          parity-blank-page
+        }
+      }
+      blank-back-page
+      cover-back-page
+    }
   }
 }
 

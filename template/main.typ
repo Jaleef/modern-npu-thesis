@@ -60,7 +60,7 @@
   academic-achievements: [
     不同类型的成果列表书写格式与参考文献相同。对于学术论文，如已发表的被EI或SCI收录，应标明收录号；SCI论文一般应标注发表当年的影响因子；对已录用但尚未发表的学术论文，请注明是否EI或SCI刊源。
   ],
-  scan-declaration: image("images/声明.pdf", width: 100%, height: 100%),
+  scan-declaration: image("images/声明.pdf"),
 )
 
 #let thesis-body = [
