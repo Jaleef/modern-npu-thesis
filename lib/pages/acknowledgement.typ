@@ -10,17 +10,25 @@
   doctype: "master",
   fonts: (:),
   // 其他参数
-  title: "致　谢",
+  title: auto,
   outlined: true,
   body,
 ) = {
   fonts = 字体 + fonts
+  if title == auto {
+    title = if doctype == "bachelor" { "致　　谢" } else { "致　谢" }
+  }
 
   if not anonymous {
     pagebreak(weak: true, to: if twoside { "odd" })
     [
       #set text(font: fonts.宋体, size: 字号.小四)
-      #set par(leading: 0.9em, justify: true)
+      #set par(
+        leading: if doctype == "bachelor" { 2.4pt } else { 0.9em },
+        spacing: 0pt,
+        justify: true,
+        first-line-indent: if doctype == "bachelor" { (amount: 26pt, all: true) } else { (amount: 2em, all: true) },
+      )
 
       // 使用统一的一级标题样式
       #show heading.where(level: 1, numbering: none): it => preface-heading-style(it, fonts)

@@ -3,34 +3,33 @@
 // ============================================
 // 页眉统一配置
 // ============================================
-
-// 页眉上升距离（页面顶部到页眉内容的距离）
-#let header-ascent = 1.2cm - 1.5em
-
-// 页眉内部间距配置
-#let header-inner-spacing = 0.5em  // 内容与上线的距离
-#let header-line-gap = 0.3em       // 两根线之间的距离
-
-// 页眉线条粗细
-#let header-line-thick = 2.7pt       // 上线粗细
-#let header-line-thin = 0.5pt      // 下线粗细
+// 直接对齐 LaTeX 模板中的 geometry/fancyhdr 参数
+#let header_ascent = 0.93cm
+#let graduate_headsep = 0.11cm
+#let bachelor_headrule = 0.8pt
+#let graduate_headrule_thick = 3.4pt
+#let graduate_headrule_thin = 0.6pt
 
 // 页眉配置（用于 set page）
 #let graduate-header-config = (
-  header-ascent: header-ascent,
+  header-ascent: header_ascent,
+)
+
+#let bachelor-header-config = (
+  header-ascent: header_ascent,
 )
 
 // 页眉渲染函数
 #let header-render(content, fonts: (:)) = {
   fonts = 字体 + fonts
   [
-    #set par(leading: 0em, spacing: 0em)
+    #set par(leading: 0pt, spacing: 0pt)
     #set text(font: fonts.宋体, size: 字号.小五)
     #align(center)[#content]
-    #v(header-inner-spacing)
-    #line(length: 100%, stroke: header-line-thick + black)
-    #v(header-line-gap)
-    #line(length: 100%, stroke: header-line-thin + black)
+    #v(graduate_headsep)
+    #line(length: 100%, stroke: graduate_headrule_thick + black)
+    #v(-0.15em)
+    #line(length: 100%, stroke: graduate_headrule_thin + black)
   ]
 }
 
@@ -40,6 +39,16 @@
   } else {
     "西北工业大学硕士学位论文"
   }
+}
+
+#let bachelor-header-render() = {
+  [
+    #align(center)[
+      #image("../../template/images/nwpuheader.png", width: 7cm)
+    ]
+    #v(graduate_headsep)
+    #line(length: 100%, stroke: bachelor_headrule + black)
+  ]
 }
 
 #let add-blank-even-page(doctype: "master", fonts: (:), terminal: false) = {

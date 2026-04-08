@@ -1,4 +1,4 @@
-#import "../utils/datetime-display.typ": datetime-display
+#import "../utils/datetime-display.typ": datetime-display, datetime-year-month
 #import "../utils/style.typ": 字号, 字体
 
 // 西北工业大学本科生封面
@@ -10,29 +10,18 @@
   info: (:),
   // 其他参数
   stroke-width: 0.5pt,
-  min-title-lines: 2,
-  info-inset: (x: 0pt, bottom: 1pt),
-  info-key-width: 72pt,
-  info-key-font: "宋体",
-  info-value-font: "宋体",
-  column-gutter: -3pt,
-  row-gutter: 11.5pt,
-  anonymous-info-keys: ("grade", "student-id", "author", "supervisor", "supervisor-ii"),
-  bold-info-keys: ("title",),
-  bold-level: "bold",
-  datetime-display: datetime-display,
+  line-width: 5.5cm,
+  title-line-width: 8cm,
+  datetime-display: datetime-year-month,
 ) = {
   // 1.  默认参数
   fonts = 字体 + fonts
   info = (
-    title: ("基于 Typst 的", "西北工业大学毕业论文"),
-    grade: "20XX",
-    student-id: "1234567890",
+    title: "基于 Typst 的西北工业大学毕业论文",
     author: "张三",
-    department: "某学院",
     major: "某专业",
     supervisor: ("李四", "教授"),
-    submit-date: datetime.today(),
+    submit-date: (year: 2026, month: 6),
   ) + info
 
   // 2.  对参数进行处理
@@ -40,9 +29,7 @@
   if type(info.title) == str {
     info.title = info.title.split("\n")
   }
-  // 2.2 根据 min-title-lines 填充标题
-  info.title = info.title + range(min-title-lines - info.title.len()).map((it) => "　")
-  // 2.3 处理提交日期
+  // 2.2 处理提交日期
   // submit-date 支持 datetime 或 (year: 2026, month: 3) 格式
   if type(info.submit-date) == dictionary {
     info.submit-date = datetime(year: info.submit-date.year, month: info.submit-date.month, day: 1)
@@ -52,59 +39,22 @@
   }
 
   // 3.  内置辅助函数
-  let info-key(body) = {
-    rect(
-      width: 100%,
-      inset: info-inset,
-      stroke: none,
-      text(
-        font: fonts.at(info-key-font, default: "宋体"),
-        size: 字号.三号,
-        body
-      ),
-    )
+  let mask-value(body) = {
+    if anonymous { "████████" } else { body }
   }
 
-  let info-value(key, body) = {
-    set align(center)
-    rect(
-      width: 100%,
-      inset: info-inset,
-      stroke: (bottom: stroke-width + black),
-      text(
-        font: fonts.at(info-value-font, default: "宋体"),
-        size: 字号.三号,
-        weight: if key in bold-info-keys { bold-level } else { "regular" },
-        bottom-edge: "descender",
-        body,
-      ),
-    )
+  let underline-field(label, body, width: line-width, label-size: 字号.四号, value-size: 字号.四号) = {
+    align(center)[
+      #text(font: fonts.宋体, size: label-size)[#label]
+      #box(width: 0.2cm)
+      #box(width: width)[
+        #align(center + horizon)[
+          #text(font: fonts.宋体, size: value-size)[#body]
+        ]
+        #line(length: 100%, stroke: stroke-width + black)
+      ]
+    ]
   }
-
-  let info-long-value(key, body) = {
-    grid.cell(colspan: 3,
-      info-value(
-        key,
-        if anonymous and (key in anonymous-info-keys) {
-          "██████████"
-        } else {
-          body
-        }
-      )
-    )
-  }
-
-  let info-short-value(key, body) = {
-    info-value(
-      key,
-      if anonymous and (key in anonymous-info-keys) {
-        "█████"
-      } else {
-        body
-      }
-    )
-  }
-
 
   // 4.  正式渲染
 
@@ -117,48 +67,30 @@
   if anonymous {
     v(80pt)
   } else {
-    // 西北工业大学校名（暂用文字代替，后续可替换为校徽图片）
-    v(40pt)
-    text(size: 字号.一号, font: fonts.宋体, weight: "bold")[西 北 工 业 大 学]
-    v(10pt)
+    v(2.3cm)
+    image("../../template/images/nwpulogo.png", width: 10cm)
+    v(1.3cm)
   }
 
   // 论文类型标题
-  text(size: 字号.一号, font: fonts.宋体, spacing: 200%, weight: "bold")[本科毕业设计（论文）]
+  text(size: 字号.小初, font: fonts.宋体, weight: "bold")[本科毕业设计（论文）]
 
   if anonymous {
     v(180pt)
   } else {
-    v(100pt)
+    v(3.5cm)
   }
 
-  block(width: 340pt, grid(
-    columns: (info-key-width, 1fr, info-key-width, 1fr),
-    column-gutter: column-gutter,
-    row-gutter: row-gutter,
-    info-key("学　　院"),
-    info-long-value("department", info.department),
-    info-key("专　　业"),
-    info-long-value("major", info.major),
-    info-key("题　　目"),
-    ..info.title.map((s) => info-long-value("title", s)).intersperse(info-key("　")),
-    info-key("年　　级"),
-    info-short-value("grade", info.grade),
-    info-key("学　　号"),
-    info-short-value("student-id", info.student-id),
-    info-key("学生姓名"),
-    info-long-value("author", info.author),
-    info-key("指导教师"),
-    info-short-value("supervisor", info.supervisor.at(0)),
-    info-key("职　　称"),
-    info-short-value("supervisor", info.supervisor.at(1)),
-    ..(if info.supervisor-ii != () {(
-      info-key("第二导师"),
-      info-short-value("supervisor-ii", info.supervisor-ii.at(0)),
-      info-key("职　　称"),
-      info-short-value("supervisor-ii", info.supervisor-ii.at(1)),
-    )} else {()}),
-    info-key("提交日期"),
-    info-long-value("submit-date", info.submit-date),
-  ))
+  block(width: 100%)[
+    #underline-field("题　　目", mask-value((("",) + info.title).join(" ")), width: title-line-width, label-size: 字号.三号, value-size: 字号.三号)
+    #v(1.5cm)
+    #underline-field("专业名称", info.major)
+    #v(1.1cm)
+    #underline-field("学生姓名", mask-value(info.author))
+    #v(1.1cm)
+    #underline-field("指导教师", mask-value(info.supervisor.at(0)))
+    #v(1.1cm)
+    #underline-field("毕业时间", info.submit-date)
+    #v(1fr)
+  ]
 }

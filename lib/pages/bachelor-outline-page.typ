@@ -26,12 +26,13 @@
   above: auto,
   below: auto,
   indent: (0pt, 20pt, 20pt),
+  weight: auto,
   // 全都显示点号
   fill: (repeat([.], gap: 0.15em),),
   gap: .3em,
   // 行间距
-  leading: 1.0em,
-  spacing: 1.0em,
+  leading: auto,
+  spacing: 0pt,
   ..args,
 ) = {
   // 1.  默认参数
@@ -39,6 +40,10 @@
 
   // 研究生和本科生使用不同的默认格式
   let is-graduate = doctype == "master" or doctype == "doctor"
+
+  if not is-graduate and depth == 4 {
+    depth = 2
+  }
 
   // 标题默认值
   if title == auto {
@@ -79,14 +84,21 @@
     above = if is-graduate {
       (20pt, 6pt)
     } else {
-      (25pt, 14pt)
+      (0.5em, 0pt, 0pt)
     }
   }
   if below == auto {
     below = if is-graduate {
       (6pt, 6pt)
     } else {
-      (14pt, 14pt)
+      (0em, 0pt, 0pt)
+    }
+  }
+  if weight == auto {
+    weight = if is-graduate {
+      ("regular", "regular", "regular")
+    } else {
+      ("bold", "regular", "regular")
     }
   }
   // 行间距
@@ -94,7 +106,7 @@
     leading = if is-graduate {
       14pt
     } else {
-      1.5em
+      2.4pt
     }
   }
 
@@ -120,7 +132,7 @@
     #v(title-vspace)
 
     // 目录样式
-    #set par(leading: leading)
+    #set par(leading: leading, spacing: spacing)
     #set outline(indent: level => indent.slice(0, calc.min(level + 1, indent.len())).sum())
     #show outline.entry: entry => {
       // 研究生使用固定行间距，不额外添加 above/below
@@ -132,6 +144,7 @@
             text(
               font: font.at(entry.level - 1, default: font.last()),
               size: size.at(entry.level - 1, default: size.last()),
+              weight: weight.at(entry.level - 1, default: weight.last()),
               {
                 if entry.prefix() not in (none, []) {
                   entry.prefix()

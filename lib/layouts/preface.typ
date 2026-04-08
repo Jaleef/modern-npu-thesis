@@ -1,5 +1,5 @@
 #import "../utils/style.typ": 字体, 字号
-#import "../utils/header.typ": graduate-header-title, header-render
+#import "../utils/header.typ": bachelor-header-render, graduate-header-title, header-render
 #import "../utils/custom-heading.typ": active-heading, heading-display
 
 // ============================================
@@ -78,6 +78,8 @@
 
         if is-graduate {
           header-render(header-content, fonts: fonts)
+        } else {
+          bachelor-header-render()
         }
       },
     )

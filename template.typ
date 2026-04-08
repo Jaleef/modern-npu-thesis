@@ -14,6 +14,7 @@
 #import "lib/pages/master-abstract-en.typ": master-abstract-en
 #import "lib/pages/bachelor-outline-page.typ": bachelor-outline-page
 #import "lib/pages/acknowledgement.typ": acknowledgement
+#import "lib/pages/design-summary.typ": design-summary as design-summary-page
 #import "lib/pages/academic-achievements.typ": academic-achievements
 #import "lib/utils/custom-cuti.typ": *
 #import "lib/utils/bilingual-bibliography.typ": bilingual-bibliography
@@ -119,7 +120,7 @@
       preface(
         twoside: twoside,
         doctype: doctype,
-        display-header: (doctype == "master" or doctype == "doctor"),
+        display-header: true,
         fonts: fonts + args.named().at("fonts", default: (:)),
         ..args,
         it,
@@ -137,6 +138,8 @@
       } else {
         mainmatter(
           twoside: twoside,
+          doctype: doctype,
+          display-header: true,
           ..args,
           fonts: fonts + args.named().at("fonts", default: (:)),
         )
@@ -299,16 +302,21 @@
   academic-achievements: none,
   scan-declaration: none,
   appendix: none,
-  outline-depth: 3,
+  design_summary: none,
+  outline-depth: auto,
   // 文档内容
   body,
 ) = {
   // 命令行参数覆盖
   let anonymous = _parse-bool(sys.inputs.at("anonymous", default: none), anonymous)
   let twoside = _parse-bool(sys.inputs.at("twoside", default: none), twoside)
+  let effective_twoside = if doctype == "bachelor" { false } else { twoside }
   let colored-cover = _parse-bool(sys.inputs.at("colored-cover", default: none), colored-cover)
+  if outline-depth == auto {
+    outline-depth = if doctype == "bachelor" { 2 } else { 3 }
+  }
   let close-backmatter-section = has-more-content => {
-    if twoside {
+    if effective_twoside {
       if has-more-content {
         pagebreak(to: "odd")
       } else if colored-cover and (doctype == "master" or doctype == "doctor") {
@@ -323,7 +331,7 @@
     doctype: doctype,
     degree: degree,
     nl-cover: nl-cover,
-    twoside: twoside,
+    twoside: effective_twoside,
     colored-cover: colored-cover,
     anonymous: anonymous,
     fonts: fonts,
@@ -356,41 +364,70 @@
   if bibliography != none {
     (cls.bilingual-bibliography)()
     close-backmatter-section(
-      appendix != none
-        or acknowledgement != none
-        or academic-achievements != none
-        or scan-declaration != none,
+      if doctype == "bachelor" {
+        (
+          acknowledgement != none
+          or design_summary != none
+          or appendix != none
+          or scan-declaration != none
+        )
+      } else {
+        (
+          appendix != none
+          or acknowledgement != none
+          or academic-achievements != none
+          or scan-declaration != none
+        )
+      }
     )
   }
 
-  // 附录
-  if appendix != none {
-    show: cls.appendix
-    appendix
-    close-backmatter-section(
-      acknowledgement != none
-        or academic-achievements != none
-        or scan-declaration != none,
-    )
-  }
+  if doctype == "bachelor" {
+    if acknowledgement != none {
+      (cls.acknowledgement)(acknowledgement)
+      close-backmatter-section(design_summary != none or appendix != none or scan-declaration != none)
+    }
 
-  // 致谢
-  if acknowledgement != none {
-    (cls.acknowledgement)(acknowledgement)
-    close-backmatter-section(
-      academic-achievements != none
-        or scan-declaration != none,
-    )
-  }
+    if design_summary != none {
+      design-summary-page(twoside: effective_twoside, fonts: fonts)[#design_summary]
+      close-backmatter-section(appendix != none or scan-declaration != none)
+    }
 
-  // 学术成果
-  if academic-achievements != none {
-    (cls.academic-achievements)(academic-achievements)
-    close-backmatter-section(scan-declaration != none)
+    if appendix != none {
+      show: cls.appendix
+      appendix
+      close-backmatter-section(scan-declaration != none)
+    }
+  } else {
+    // 附录
+    if appendix != none {
+      show: cls.appendix
+      appendix
+      close-backmatter-section(
+        acknowledgement != none
+          or academic-achievements != none
+          or scan-declaration != none,
+      )
+    }
+
+    // 致谢
+    if acknowledgement != none {
+      (cls.acknowledgement)(acknowledgement)
+      close-backmatter-section(
+        academic-achievements != none
+          or scan-declaration != none,
+      )
+    }
+
+    // 学术成果
+    if academic-achievements != none {
+      (cls.academic-achievements)(academic-achievements)
+      close-backmatter-section(scan-declaration != none)
+    }
   }
 
   // 声明扫描页
-  if scan-declaration != none {
+  if scan-declaration != none and doctype != "bachelor" {
     page(margin: 0pt)[
       #scan-declaration
       #box(width: 0pt, height: 0pt) <__nwpu_backmatter_end__>

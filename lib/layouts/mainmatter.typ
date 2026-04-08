@@ -3,7 +3,7 @@
 #import "../utils/custom-numbering.typ": custom-numbering
 #import "../utils/custom-heading.typ": active-heading, heading-display
 #import "../utils/unpairs.typ": unpairs
-#import "../utils/header.typ": graduate-header-title, header-render
+#import "../utils/header.typ": bachelor-header-render, graduate-header-title, header-render
 #import "../layouts/preface.typ": heading-above as level1-heading-above, heading-below as level1-heading-below
 
 #let mainmatter(
@@ -12,15 +12,11 @@
   doctype: "bachelor",
   fonts: (:),
   // 其他参数
-  leading: 0.9em,
-  spacing: 1.0em,
+  leading: auto,
+  spacing: auto,
   justify: true,
-  first-line-indent: (amount: 2em, all: true),
-  numbering: custom-numbering.with(
-    first-level: n => [#("第" + str(n) + "章　")],
-    depth: 4,
-    "1.1 ",
-  ),
+  first-line-indent: auto,
+  numbering: auto,
   // 正文字体与字号参数
   text-args: auto,
   // 标题字体与字号
@@ -28,8 +24,8 @@
   heading-size: (字号.三号, 字号.四号, 字号.小四),
   heading-weight: ("regular", "regular", "regular"),
   // 一级标题使用统一配置，二三级保持原有值
-  heading-above: (level1-heading-above, 2 * 15.6pt - 0.7em, 2 * 15.6pt - 0.7em),
-  heading-below: (level1-heading-below, 1.5 * 15.6pt - 0.7em, 1.5 * 15.6pt - 0.7em),
+  heading-above: auto,
+  heading-below: auto,
   heading-pagebreak: (true, false, false),
   heading-align: (center, auto, auto),
   // 页眉
@@ -50,19 +46,69 @@
   ..args,
   it,
 ) = {
-  numbering = custom-numbering.with(
-    first-level: n => [第 #n 章#h(0.7em)],
-    depth: 4,
-    "1.1 ",
-  )
   // 1.  默认参数（提前初始化 fonts）
   fonts = 字体 + fonts
+  let is-graduate = doctype == "master" or doctype == "doctor"
+  let chinese_chapter_number(n) = {
+    let digits = ("零", "一", "二", "三", "四", "五", "六", "七", "八", "九")
+    if n <= 10 {
+      if n == 10 { "十" } else { digits.at(n) }
+    } else if n < 20 {
+      "十" + digits.at(calc.rem(n, 10))
+    } else if calc.rem(n, 10) == 0 {
+      digits.at(calc.floor(n / 10)) + "十"
+    } else {
+      digits.at(calc.floor(n / 10)) + "十" + digits.at(calc.rem(n, 10))
+    }
+  }
+  if leading == auto {
+    leading = if is-graduate { 0.9em } else { 2.4pt }
+  }
+  if spacing == auto {
+    spacing = if is-graduate { 1.0em } else { 0pt }
+  }
+  if first-line-indent == auto {
+    first-line-indent = if is-graduate {
+      (amount: 2em, all: true)
+    } else {
+      (amount: 26pt, all: true)
+    }
+  }
+  if numbering == auto {
+    numbering = if is-graduate {
+      custom-numbering.with(
+        first-level: n => [第 #n 章#h(0.7em)],
+        depth: 4,
+        "1.1 ",
+      )
+    } else {
+      custom-numbering.with(
+        first-level: n => [第#chinese_chapter_number(n)章],
+        depth: 4,
+        "1.1 ",
+      )
+    }
+  }
   if text-args == auto {
     text-args = (font: fonts.宋体, size: 字号.小四)
   }
   // 1.1 字体与字号
   if heading-font == auto {
     heading-font = (fonts.黑体,)
+  }
+  if heading-above == auto {
+    heading-above = if is-graduate {
+      (level1-heading-above, 2 * 15.6pt - 0.7em, 2 * 15.6pt - 0.7em)
+    } else {
+      (15.2pt, -3pt, -1.5pt)
+    }
+  }
+  if heading-below == auto {
+    heading-below = if is-graduate {
+      (level1-heading-below, 1.5 * 15.6pt - 0.7em, 1.5 * 15.6pt - 0.7em)
+    } else {
+      (14.4pt, 2pt, -1pt)
+    }
   }
 
   // 双面打印时确保正文从奇数页开始
@@ -179,8 +225,6 @@
             counter(footnote).update(0)
           }
           let loc = here()
-          // 判断是否为研究生
-          let is-graduate = doctype == "master" or doctype == "doctor"
           // 页眉内容
           let header-content = if twoside and calc.rem(loc.page(), 2) == 0 and is-graduate {
             // 偶数页：显示论文标题
@@ -190,7 +234,11 @@
             heading-display(active-heading(level: 1, prev: false))
           }
           // 使用统一的页眉格式
-          header-render(header-content, fonts: fonts)
+          if is-graduate {
+            header-render(header-content, fonts: fonts)
+          } else {
+            bachelor-header-render()
+          }
         },
       )
     } else {

@@ -12,11 +12,12 @@
   info: (:),
   // 其他参数
   keywords: (),
-  outline-title: "摘要",
+  funding: none,
+  outline-title: "摘　　要",
   outlined: false,
   anonymous-info-keys: ("author", "supervisor", "supervisor-ii"),
-  leading: 1.28em,
-  spacing: 1.28em,
+  leading: 2.4pt,
+  spacing: 0pt,
   body,
 ) = {
   // 1.  默认参数
@@ -55,12 +56,12 @@
     #heading(level: 1, outlined: outlined, outline-title)
 
     #[
-      #set par(first-line-indent: (amount: 2em, all: true))
+      #set par(first-line-indent: (amount: 26pt, all: true))
 
       #body
     ]
 
-    #v(1em)
+    #v(0.1em)
 
     #text(font: fonts.宋体, size: 字号.小四)[
       #fakebold[关键词：]#(("",)+ keywords.intersperse("，")).sum()

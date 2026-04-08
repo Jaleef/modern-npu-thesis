@@ -33,9 +33,9 @@
       )
     } else {
       custom-numbering.with(
-        first-level: n => [附录#appendix-prefix#h(0.7em)],
+        first-level: n => [附录#h(0.7em)],
         depth: 4,
-        "A.1 ",
+        "1 ",
       )
     }
 
@@ -45,9 +45,9 @@
     }
 
     show heading: i-figured.reset-counters
-    show figure: i-figured.show-figure.with(numbering: if appendix-headings.len() > 1 { "A-1" } else { "A-1" })
+    show figure: i-figured.show-figure.with(numbering: if appendix-headings.len() > 1 { "A-1" } else { "1" })
     show math.equation.where(block: true): i-figured.show-equation.with(
-      numbering: if appendix-headings.len() > 1 { "(A-1)" } else { "(A-1)" },
+      numbering: if appendix-headings.len() > 1 { "(A-1)" } else { "(1)" },
     )
 
     [

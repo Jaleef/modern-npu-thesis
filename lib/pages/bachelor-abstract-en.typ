@@ -11,11 +11,12 @@
   info: (:),
   // 其他参数
   keywords: (),
+  funding: none,
   outline-title: "ABSTRACT",
   outlined: false,
   anonymous-info-keys: ("author-en", "supervisor-en", "supervisor-ii-en"),
-  leading: 1.28em,
-  spacing: 1.38em,
+  leading: 2.4pt,
+  spacing: 0pt,
   body,
 ) = {
   // 1.  默认参数
@@ -51,7 +52,7 @@
     #heading(level: 1, outlined: outlined, outline-title)
 
     #[
-      #set par(first-line-indent: (amount: 2em, all: true))
+      #set par(first-line-indent: (amount: 26pt, all: true))
 
       #body
     ]

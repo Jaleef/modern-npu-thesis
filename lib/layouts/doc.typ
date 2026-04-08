@@ -1,6 +1,6 @@
 // 文稿设置，可以进行一些像页面边距这类的全局设置
 #import "../utils/style.typ": 字体, 字号
-#import "../utils/header.typ": graduate-header-config, header-render
+#import "../utils/header.typ": bachelor-header-config, graduate-header-config
 #import "../utils/custom-cuti.typ": show-cn-fakebold
 
 #let doc(
@@ -37,8 +37,8 @@
       // 研究生：上下2.54cm，左右2.5cm
       (top: 2.54cm, bottom: 2.54cm, left: 2.5cm, right: 2.5cm)
     } else {
-      // 本科生：默认左右边距
-      (x: 89pt)
+      // 本科生：与 LaTeX 模板保持一致
+      (top: 1in, bottom: 1in, left: 1.25in, right: 1.25in)
     }
   } else {
     margin
@@ -51,8 +51,13 @@
   set page(
     paper: "a4",
     margin: page-margin,
-    // 研究生设置页眉基础配置
-    ..(if doctype == "master" or doctype == "doctor" { graduate-header-config } else { (:) }),
+    ..(
+      if doctype == "master" or doctype == "doctor" {
+        graduate-header-config
+      } else {
+        bachelor-header-config
+      }
+    ),
   )
 
   // 4.  PDF 元信息

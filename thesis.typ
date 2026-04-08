@@ -1,7 +1,7 @@
 ﻿#import "template.typ": nwpu-thesis, algorithm, algorithm-ref
 
 #let thesis-config = (
-  doctype: "master", // "bachelor" | "master" | "doctor",
+  doctype: "bachelor", // "bachelor" | "master" | "doctor",
   degree: "professional", // "academic" | "professional",
   anonymous: false, // 是否开启盲审模式
   colored-cover: true, // 是否开启彩色封面封底
@@ -56,6 +56,9 @@
   ],
   acknowledgement: [
     致谢是作者对该文章的形成作过贡献的组织或个人予以感谢的文字记载，语言要诚恳、恰当、简短。致谢内容可以包括但不限于：国家科学基金、资助研究工作的奖学金基金、合同单位、资助或支持的企业、组织或个人；协助完成研究工作和提供便利条件的组织或个人；在研究工作中提出建议和提供帮助的人；给予转载和引用权的资料、图片、文献、研究和调查的所有者；其他应感谢的组织和个人。
+  ],
+  design_summary: [
+    本文在导师的指导下，围绕本科毕业设计论文模板的实现与版式对齐工作，完成了本科论文封面、摘要、目录、页眉页脚及后置部分的适配与修正。通过对照 LaTeX 模板逐项调整，最终使 Typst 模板的本科版式更加接近学校要求。
   ],
   academic-achievements: [
     不同类型的成果列表书写格式与参考文献相同。对于学术论文，如已发表的被EI或SCI收录，应标明收录号；SCI论文一般应标注发表当年的影响因子；对已录用但尚未发表的学术论文，请注明是否EI或SCI刊源。
