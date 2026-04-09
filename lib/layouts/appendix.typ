@@ -5,6 +5,7 @@
 // 附录布局
 #let appendix(
   twoside: false,
+  doctype: "bachelor",
   fonts: (:),
   // 重置计数
   reset-counter: true,
@@ -18,6 +19,7 @@
     let appendix-headings = query(
       selector(heading.where(level: 1)).after(selector(<appendix-start>)).before(selector(<appendix-end>)),
     )
+    let appendix-label = if doctype == "bachelor" { "附 录" } else { "附录" }
     let has-appendix = appendix-headings.len() > 0
     let appendix-prefix = if has-appendix {
       numbering("A", 1)
@@ -27,13 +29,13 @@
 
     let appendix-numbering = if appendix-headings.len() > 1 {
       custom-numbering.with(
-        first-level: n => [附录#numbering("A", n)#h(0.7em)],
+        first-level: n => [#appendix-label#numbering("A", n)#h(0.7em)],
         depth: 4,
         "A.1 ",
       )
     } else {
       custom-numbering.with(
-        first-level: n => [附录#h(0.7em)],
+        first-level: n => [#appendix-label#h(0.7em)],
         depth: 4,
         "1 ",
       )

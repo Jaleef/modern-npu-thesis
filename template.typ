@@ -24,15 +24,18 @@
 #import "lib/utils/style.typ": 字体, 字号
 
 #let indent = h(2em)
+#let bachelor-first-level-value(value) = if type(value) == array {
+  value.at(0, default: value.last())
+} else {
+  value
+}
+
 #let bachelor_style_defaults = (
   leading: 10pt,
   spacing: 10pt,
   heading_leading: (10pt, 10pt, 10pt),
-  preface_heading_leading: 10pt,
-  heading_above: (15.2pt, 10pt, 10pt),
-  heading_below: (14.4pt, 10pt, 10pt),
-  preface_heading_above: 2 * 14pt - 0.7em,
-  preface_heading_below: 2 * 17pt - 0.7em,
+  heading_above: (28pt, 10pt, 10pt),
+  heading_below: (28pt, 10pt, 10pt),
 )
 
 #let bachelor-thesis-config(
@@ -56,11 +59,8 @@
   bachelor_leading: bachelor_style_defaults.leading,
   bachelor_spacing: bachelor_style_defaults.spacing,
   bachelor_heading_leading: bachelor_style_defaults.heading_leading,
-  bachelor_preface_heading_leading: bachelor_style_defaults.preface_heading_leading,
   bachelor_heading_above: bachelor_style_defaults.heading_above,
   bachelor_heading_below: bachelor_style_defaults.heading_below,
-  bachelor_preface_heading_above: bachelor_style_defaults.preface_heading_above,
-  bachelor_preface_heading_below: bachelor_style_defaults.preface_heading_below,
   info_extra: (:),
   config_extra: (:),
 ) = {
@@ -89,11 +89,8 @@
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
-    bachelor_preface_heading_leading: bachelor_preface_heading_leading,
     bachelor_heading_above: bachelor_heading_above,
     bachelor_heading_below: bachelor_heading_below,
-    bachelor_preface_heading_above: bachelor_preface_heading_above,
-    bachelor_preface_heading_below: bachelor_preface_heading_below,
   ) + config_extra
 }
 
@@ -191,11 +188,8 @@
   bachelor_leading: bachelor_style_defaults.leading, // 本科论文统一行距增量
   bachelor_spacing: bachelor_style_defaults.spacing, // 本科论文统一段间距
   bachelor_heading_leading: bachelor_style_defaults.heading_leading, // 本科正文各级标题行距
-  bachelor_preface_heading_leading: bachelor_style_defaults.preface_heading_leading, // 本科前后置一级标题行距
   bachelor_heading_above: bachelor_style_defaults.heading_above, // 本科正文各级标题段前距
   bachelor_heading_below: bachelor_style_defaults.heading_below, // 本科正文各级标题段后距
-  bachelor_preface_heading_above: bachelor_style_defaults.preface_heading_above, // 本科前后置一级标题段前距
-  bachelor_preface_heading_below: bachelor_style_defaults.preface_heading_below, // 本科前后置一级标题段后距
   colored-cover: false, // 是否开启彩色封面封底
   anonymous: false, // 盲审模式
   bibliography: none, // 原来的参考文献函数
@@ -271,11 +265,8 @@
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
-    bachelor_preface_heading_leading: bachelor_preface_heading_leading,
     bachelor_heading_above: bachelor_heading_above,
     bachelor_heading_below: bachelor_heading_below,
-    bachelor_preface_heading_above: bachelor_preface_heading_above,
-    bachelor_preface_heading_below: bachelor_preface_heading_below,
     anonymous: anonymous,
     fonts: fonts,
     info: info,
@@ -294,11 +285,6 @@
           twoside: twoside,
           doctype: doctype,
           display-header: true,
-          bachelor_leading: bachelor_leading,
-          bachelor_spacing: bachelor_spacing,
-          bachelor_preface_heading_leading: bachelor_preface_heading_leading,
-          bachelor_preface_heading_above: bachelor_preface_heading_above,
-          bachelor_preface_heading_below: bachelor_preface_heading_below,
           fonts: fonts + args.named().at("fonts", default: (:)),
           ..args,
           it,
@@ -336,6 +322,7 @@
     appendix: (..args) => {
       appendix(
         twoside: twoside,
+        doctype: doctype,
         ..args,
       )
     },
@@ -386,6 +373,9 @@
           twoside: twoside,
           leading: bachelor_leading,
           spacing: bachelor_spacing,
+          title-leading: bachelor-first-level-value(bachelor_heading_leading),
+          title-above: bachelor-first-level-value(bachelor_heading_above),
+          title-below: bachelor-first-level-value(bachelor_heading_below),
           ..args,
           fonts: fonts + args.named().at("fonts", default: (:)),
           info: info + args.named().at("info", default: (:)),
@@ -412,6 +402,9 @@
           twoside: twoside,
           leading: bachelor_leading,
           spacing: bachelor_spacing,
+          title-leading: bachelor-first-level-value(bachelor_heading_leading),
+          title-above: bachelor-first-level-value(bachelor_heading_above),
+          title-below: bachelor-first-level-value(bachelor_heading_below),
           ..args,
           fonts: fonts + args.named().at("fonts", default: (:)),
           info: info + args.named().at("info", default: (:)),
@@ -425,6 +418,9 @@
         doctype: doctype,
         leading: if doctype == "bachelor" { bachelor_leading } else { auto },
         spacing: if doctype == "bachelor" { bachelor_spacing } else { 0pt },
+        title-leading: if doctype == "bachelor" { bachelor-first-level-value(bachelor_heading_leading) } else { auto },
+        title-above: if doctype == "bachelor" { bachelor-first-level-value(bachelor_heading_above) } else { auto },
+        title-below: if doctype == "bachelor" { bachelor-first-level-value(bachelor_heading_below) } else { auto },
         ..args,
         fonts: fonts + args.named().at("fonts", default: (:)),
       )
@@ -445,6 +441,9 @@
         doctype: doctype,
         leading: bachelor_leading,
         spacing: bachelor_spacing,
+        title-leading: bachelor-first-level-value(bachelor_heading_leading),
+        title-above: bachelor-first-level-value(bachelor_heading_above),
+        title-below: bachelor-first-level-value(bachelor_heading_below),
         fonts: fonts + args.named().at("fonts", default: (:)),
         ..args,
       )
@@ -485,11 +484,8 @@
   bachelor_leading: bachelor_style_defaults.leading,
   bachelor_spacing: bachelor_style_defaults.spacing,
   bachelor_heading_leading: bachelor_style_defaults.heading_leading,
-  bachelor_preface_heading_leading: bachelor_style_defaults.preface_heading_leading,
   bachelor_heading_above: bachelor_style_defaults.heading_above,
   bachelor_heading_below: bachelor_style_defaults.heading_below,
-  bachelor_preface_heading_above: bachelor_style_defaults.preface_heading_above,
-  bachelor_preface_heading_below: bachelor_style_defaults.preface_heading_below,
   colored-cover: false,
   anonymous: false,
   fonts: (:),
@@ -539,11 +535,8 @@
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
-    bachelor_preface_heading_leading: bachelor_preface_heading_leading,
     bachelor_heading_above: bachelor_heading_above,
     bachelor_heading_below: bachelor_heading_below,
-    bachelor_preface_heading_above: bachelor_preface_heading_above,
-    bachelor_preface_heading_below: bachelor_preface_heading_below,
     colored-cover: colored-cover,
     anonymous: anonymous,
     fonts: fonts,
@@ -606,13 +599,19 @@
         fonts: fonts,
         leading: bachelor_leading,
         spacing: bachelor_spacing,
+        title-leading: bachelor-first-level-value(bachelor_heading_leading),
+        title-above: bachelor-first-level-value(bachelor_heading_above),
+        title-below: bachelor-first-level-value(bachelor_heading_below),
       )[#design_summary]
       close-backmatter-section(appendix != none or scan-declaration != none)
     }
 
     if appendix != none {
       show: cls.appendix
-      appendix
+      [
+        #heading(level: 1)[]
+        #appendix
+      ]
       close-backmatter-section(scan-declaration != none)
     }
   } else {

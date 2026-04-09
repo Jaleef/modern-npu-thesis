@@ -4,19 +4,21 @@
 // 页眉统一配置
 // ============================================
 // 直接对齐 LaTeX 模板中的 geometry/fancyhdr 参数
-#let header_ascent = 0.93cm
+#let graduate_header_ascent = 0.93cm
+#let bachelor_header_ascent = 0.2cm
 #let graduate_headsep = 0.11cm
+#let bachelor_headsep = -0.1cm
 #let bachelor_headrule = 0.8pt
 #let graduate_headrule_thick = 3.4pt
 #let graduate_headrule_thin = 0.6pt
 
 // 页眉配置（用于 set page）
 #let graduate-header-config = (
-  header-ascent: header_ascent,
+  header-ascent: graduate_header_ascent,
 )
 
 #let bachelor-header-config = (
-  header-ascent: header_ascent,
+  header-ascent: bachelor_header_ascent,
 )
 
 // 页眉渲染函数
@@ -46,7 +48,7 @@
     #align(center)[
       #image("../../template/images/nwpuheader.png", width: 7cm)
     ]
-    #v(graduate_headsep)
+    #v(bachelor_headsep)
     #line(length: 100%, stroke: bachelor_headrule + black)
   ]
 }

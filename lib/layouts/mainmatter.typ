@@ -89,7 +89,7 @@
       )
     } else {
       custom-numbering.with(
-        first-level: n => [第#chinese_chapter_number(n)章],
+        first-level: n => [第#chinese_chapter_number(n)章　],
         depth: 4,
         "1.1 ",
       )

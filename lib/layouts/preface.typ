@@ -21,14 +21,21 @@
 #let preface-heading-weight = "regular"  // "regular" 不加粗, "bold" 加粗
 
 // 标题样式函数 - 供各页面调用
-#let preface-heading-style(it, fonts, centered: true, leading: 2.4pt) = {
+#let preface-heading-style(
+  it,
+  fonts,
+  centered: true,
+  leading: 2.4pt,
+  above: 0pt,
+  below: preface-heading-below,
+) = {
   set text(
     font: preface-heading-font(fonts),
     size: preface-heading-size,
     weight: preface-heading-weight,
   )
   set par(leading: leading, spacing: 0pt)
-  set block(above: 0pt, below: preface-heading-below)
+  set block(above: above, below: below)
   if centered {
     set align(center)
     it
@@ -39,11 +46,6 @@
 #let preface(
   twoside: false,
   doctype: "master",
-  bachelor_leading: 2.4pt,
-  bachelor_spacing: 0pt,
-  bachelor_preface_heading_leading: 2.4pt,
-  bachelor_preface_heading_above: heading-above,
-  bachelor_preface_heading_below: heading-below,
   fonts: (:),
   display-header: true,
   ..args,
@@ -94,14 +96,16 @@
 
   // 4. 统一控制前置部分一级标题的间距
   // 使用 Typst 官方推荐的 block 方式，避免手动 v() 间距
-  show heading.where(level: 1, numbering: none): set block(
-    above: if doctype == "bachelor" { bachelor_preface_heading_above } else { preface-heading-above },
-    below: if doctype == "bachelor" { bachelor_preface_heading_below } else { preface-heading-below },
-  )
-  show heading.where(level: 1, numbering: none): set par(
-    leading: if doctype == "bachelor" { bachelor_preface_heading_leading } else { 0.9em },
-    spacing: 0pt,
-  )
+  if doctype != "bachelor" {
+    show heading.where(level: 1, numbering: none): set block(
+      above: preface-heading-above,
+      below: preface-heading-below,
+    )
+    show heading.where(level: 1, numbering: none): set par(
+      leading: 0.9em,
+      spacing: 0pt,
+    )
+  }
 
   it
 }

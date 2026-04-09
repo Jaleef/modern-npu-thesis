@@ -1,7 +1,7 @@
 #import "../utils/style.typ": 字体, 字号
 #import "../utils/header.typ": header-render
 #import "../layouts/preface.typ": (
-  preface-heading-above, preface-heading-below, preface-heading-size, preface-heading-weight,
+  preface-heading-style,
 )
 
 // 目录生成页面
@@ -16,6 +16,9 @@
   outlined: false,
   title-vspace: 0pt,
   title-text-args: auto,
+  title-leading: auto,
+  title-above: auto,
+  title-below: auto,
   // 引用页数的字体，这里用于显示 Times New Roman
   reference-font: auto,
   reference-size: auto,
@@ -37,6 +40,18 @@
 
   // 研究生和本科生使用不同的默认格式
   let is-graduate = doctype == "master" or doctype == "doctor"
+  let chinese_chapter_number(n) = {
+    let digits = ("零", "一", "二", "三", "四", "五", "六", "七", "八", "九")
+    if n <= 10 {
+      if n == 10 { "十" } else { digits.at(n) }
+    } else if n < 20 {
+      "十" + digits.at(calc.rem(n, 10))
+    } else if calc.rem(n, 10) == 0 {
+      digits.at(calc.floor(n / 10)) + "十"
+    } else {
+      digits.at(calc.floor(n / 10)) + "十" + digits.at(calc.rem(n, 10))
+    }
+  }
 
   if not is-graduate and depth == 4 {
     depth = 2
@@ -53,6 +68,15 @@
     } else {
       (font: fonts.黑体, size: 字号.三号, weight: "bold")
     }
+  }
+  if title-leading == auto {
+    title-leading = leading
+  }
+  if title-above == auto {
+    title-above = 0pt
+  }
+  if title-below == auto {
+    title-below = 0pt
   }
   // 引用页数的字体，这里用于显示 Times New Roman
   if reference-font == auto {
@@ -108,11 +132,14 @@
     // 目录标题：字体由 title-text-args 控制，间距使用统一配置
     #show heading.where(level: 1, numbering: none): it => {
       set text(..title-text-args)
-      set par(leading: leading, spacing: 0pt)
-      set block(above: 0pt, below: preface-heading-below)
-      align(center, it)
+      preface-heading-style(
+        it,
+        fonts,
+        leading: title-leading,
+        below: title-below,
+      )
     }
-    #v(preface-heading-above)
+    #v(title-above)
     #heading(level: 1, outlined: outlined, title)
 
     #v(title-vspace)
@@ -121,6 +148,16 @@
     #set par(leading: leading, spacing: spacing)
     #set outline(indent: level => indent.slice(0, calc.min(level + 1, indent.len())).sum())
     #show outline.entry: entry => {
+      let is-appendix-entry = (
+        query(selector(<appendix-start>).before(entry.element.location())).len()
+        > query(selector(<appendix-end>).before(entry.element.location())).len()
+      )
+      let prefix = if not is-graduate and entry.level == 1 and entry.prefix() not in (none, []) and not is-appendix-entry {
+        let nums = counter(heading).at(entry.element.location())
+        [第#chinese_chapter_number(nums.first())章 ]
+      } else {
+        entry.prefix()
+      }
       // 研究生使用固定行间距，不额外添加 above/below
       let entry-content = link(
         entry.element.location(),
@@ -132,8 +169,8 @@
               size: size.at(entry.level - 1, default: size.last()),
               weight: weight.at(entry.level - 1, default: weight.last()),
               {
-                if entry.prefix() not in (none, []) {
-                  entry.prefix()
+                if prefix not in (none, []) {
+                  prefix
                   h(gap)
                 }
                 entry.body()

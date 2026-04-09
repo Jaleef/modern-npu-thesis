@@ -1,6 +1,6 @@
 #import "../utils/custom-cuti.typ": fakebold
 #import "../utils/style.typ": 字号, 字体
-#import "../layouts/preface.typ": preface-heading-above, preface-heading-below, preface-heading-size, preface-heading-weight
+#import "../layouts/preface.typ": preface-heading-style
 
 // 西北工业大学本科生英文摘要页
 #let bachelor-abstract-en(
@@ -17,6 +17,9 @@
   anonymous-info-keys: ("author-en", "supervisor-en", "supervisor-ii-en"),
   leading: 2.4pt,
   spacing: 0pt,
+  title-leading: 2.4pt,
+  title-above: 0pt,
+  title-below: 0pt,
   body,
 ) = {
   // 1.  默认参数
@@ -43,13 +46,13 @@
     #set par(leading: leading, justify: true, spacing: spacing)
 
     // 英文摘要标题，字号和间距使用统一配置
-    #show heading.where(level: 1): it => {
-      set text(size: preface-heading-size, font: fonts.黑体, weight: preface-heading-weight)
-      set par(leading: leading, spacing: 0pt)
-      set block(above: 0pt, below: preface-heading-below)
-      align(center, it)
-    }
-    #v(preface-heading-above)
+    #show heading.where(level: 1): it => preface-heading-style(
+      it,
+      fonts,
+      leading: title-leading,
+      below: title-below,
+    )
+    #v(title-above)
     #heading(level: 1, outlined: outlined, outline-title)
 
     #[

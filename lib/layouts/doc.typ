@@ -37,8 +37,8 @@
       // 研究生：上下2.54cm，左右2.5cm
       (top: 2.54cm, bottom: 2.54cm, left: 2.5cm, right: 2.5cm)
     } else {
-      // 本科生：与 LaTeX 模板保持一致
-      (top: 1in, bottom: 1in, left: 1.25in, right: 1.25in)
+      // 本科生：上下2.54cm，左右3.18cm
+      (top: 2.54cm, bottom: 2.54cm, left: 3.18cm, right: 3.18cm)
     }
   } else {
     margin

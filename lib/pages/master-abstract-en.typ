@@ -66,7 +66,7 @@
 
     #if funding != none [
       #set par(leading: 1.4em)
-      #text(font: "Times New Roman", size: 字号.五号)[#funding]
+      #text(font: fonts.宋体, size: 字号.五号)[#funding]
     ]
   ]
 }
