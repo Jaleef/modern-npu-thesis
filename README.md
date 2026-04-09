@@ -1,8 +1,8 @@
 ﻿# 西北工业大学学位论文 `modern-npu-thesis`
 
-西北工业大学毕业论文（设计）的 Typst 模板，能够简洁、快速、持续生成 PDF 格式的毕业论文。
+> This project provides a Typst thesis template for Northwestern Polytechnical University.
 
-本项目目前已经能够良好支持硕博论文格式，本科生论文格式仍在持续完善当中。
+西北工业大学本硕博毕业论文（设计）的 Typst 模板，能够简洁、快速、持续生成 PDF 格式的毕业论文。
 
 > 如果你想使用 LaTeX 版本，请参考 [nwputhesis](https://github.com/1195343015/nwputhesis)。
 
@@ -17,7 +17,9 @@
 1. 安装 VS Code 并安装 [Tinymist Typst](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist) 插件。
 2. 按下 `Ctrl + Shift + P` 打开命令界面，输入 `Typst: Show available Typst templates (gallery)`，打开 Tinymist 提供的 Template Gallery。
 3. 在 Template Gallery 中找到 `modern-npu-thesis`，点击 `+` 号创建对应的论文模板。
-4. 打开生成的项目后，修改 [template/main.typ](template/main.typ) 文件并进行实时编辑和预览。
+4. 打开生成的项目后：
+   修改 [template/graduate.typ](template/graduate.typ) 可编辑研究生论文，
+   修改 [template/bachelor.typ](template/bachelor.typ) 可编辑本科生论文。
 
 仓库已提供工作区配置 [.vscode/settings.json](.vscode/settings.json)，会为 Tinymist 默认追加 `--font-path fonts`，因此在不同系统下都会优先使用仓库内自带的 Windows 字体文件。
 
