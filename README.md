@@ -12,7 +12,19 @@
 - **极速编译**：采用增量编译，长文档不影响编译速度。
 - **环境搭建简单**：即开即用，无需配置数G的开发环境。支持现代编程语言特性（变量、函数、包管理等）。
 
-### 本地开发（推荐）
+### 使用方法
+
+#### 方式一：直接克隆仓库（推荐）
+
+1. 克隆本仓库.
+2. 使用 VS Code 打开项目，并安装 [Tinymist Typst](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist) 插件。
+3. 打开项目后：
+   修改 [template/graduate.typ](template/graduate.typ) 可编辑研究生论文，
+   修改 [template/bachelor.typ](template/bachelor.typ) 可编辑本科生论文。
+
+#### 方式二：使用 Tinymist 的 Template Gallery
+
+> 这种方式可能无法获取到模板的最新版本。
 
 1. 安装 VS Code 并安装 [Tinymist Typst](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist) 插件。
 2. 按下 `Ctrl + Shift + P` 打开命令界面，输入 `Typst: Show available Typst templates (gallery)`，打开 Tinymist 提供的 Template Gallery。
