@@ -1,5 +1,5 @@
 ﻿#import "lib/layouts/doc.typ": doc
-#import "lib/utils/algorithm.typ": algorithm, algorithm-ref, reset-algorithm-counter
+#import "lib/utils/algorithm.typ": algorithm, algorithm-ref, reset-algorithm-counter, with-english-writing
 #import "lib/layouts/preface.typ": preface
 #import "lib/layouts/mainmatter.typ": mainmatter
 #import "lib/layouts/appendix.typ": appendix
@@ -41,6 +41,7 @@
 #let bachelor-thesis-config(
   degree: "academic",
   anonymous: false,
+  english-writing: false,
   fonts: (:),
   title: ("基于 Typst 的", "西北工业大学毕业论文"),
   author: "张三",
@@ -68,6 +69,7 @@
     doctype: "bachelor",
     degree: degree,
     anonymous: anonymous,
+    english-writing: english-writing,
     colored-cover: false,
     fonts: fonts,
     info: (
@@ -98,6 +100,7 @@
   doctype: "master",
   degree: "academic",
   anonymous: false,
+  english-writing: false,
   colored-cover: false,
   fonts: (:),
   title: ("基于 Typst 的", "西北工业大学学位论文"),
@@ -146,6 +149,7 @@
     doctype: doctype,
     degree: degree,
     anonymous: anonymous,
+    english-writing: english-writing,
     colored-cover: colored-cover,
     fonts: fonts,
     info: (
@@ -185,6 +189,7 @@
   degree: "academic", // "academic" | "professional"，学位类型，默认为学术型 academic
   nl-cover: false, // TODO: 是否使用国家图书馆封面，默认关闭
   twoside: true, // 双面模式，会加入空白页，便于打印
+  english-writing: false, // 是否使用英文论文标签
   bachelor_leading: bachelor_style_defaults.leading, // 本科论文统一行距增量
   bachelor_spacing: bachelor_style_defaults.spacing, // 本科论文统一段间距
   bachelor_heading_leading: bachelor_style_defaults.heading_leading, // 本科正文各级标题行距
@@ -262,6 +267,7 @@
     degree: degree,
     nl-cover: nl-cover,
     twoside: twoside,
+    english-writing: english-writing,
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
@@ -295,6 +301,7 @@
         mainmatter(
           twoside: twoside,
           doctype: doctype,
+          english-writing: english-writing,
           display-header: true,
           bachelor_leading: bachelor_leading,
           bachelor_spacing: bachelor_spacing,
@@ -308,6 +315,7 @@
         mainmatter(
           twoside: twoside,
           doctype: doctype,
+          english-writing: english-writing,
           display-header: true,
           bachelor_leading: bachelor_leading,
           bachelor_spacing: bachelor_spacing,
@@ -323,6 +331,7 @@
       appendix(
         twoside: twoside,
         doctype: doctype,
+        english-writing: english-writing,
         ..args,
       )
     },
@@ -482,6 +491,7 @@
   degree: "academic", // "academic" | "professional"
   nl-cover: false,
   twoside: true,
+  english-writing: false,
   bachelor_leading: bachelor_style_defaults.leading,
   bachelor_spacing: bachelor_style_defaults.spacing,
   bachelor_heading_leading: bachelor_style_defaults.heading_leading,
@@ -511,6 +521,7 @@
   // 命令行参数覆盖
   let anonymous = _parse-bool(sys.inputs.at("anonymous", default: none), anonymous)
   let twoside = _parse-bool(sys.inputs.at("twoside", default: none), twoside)
+  let english-writing = _parse-bool(sys.inputs.at("english-writing", default: none), english-writing)
   let effective_twoside = if doctype == "bachelor" { false } else { twoside }
   let colored-cover = _parse-bool(sys.inputs.at("colored-cover", default: none), colored-cover)
   if outline-depth == auto {
@@ -533,6 +544,7 @@
     degree: degree,
     nl-cover: nl-cover,
     twoside: effective_twoside,
+    english-writing: english-writing,
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
@@ -564,7 +576,7 @@
   // 3. 正文
   [#box(width: 0pt, height: 0pt) <__nwpu_mainmatter_start__>]
   show: cls.mainmatter
-  body
+  with-english-writing(english-writing, body)
 
   // 4. 后置部分
   // 参考文献

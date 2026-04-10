@@ -4,6 +4,7 @@
   doctype: "master", // "master" | "doctor"，研究生论文类型
   degree: "professional", // "academic" | "professional"，学位类型
   anonymous: false, // 是否开启盲审模式
+  english-writing: false, // 是否将图表、算法等标签切换为英文
   colored-cover: true, // 是否启用彩色封面
   title: ("基于 Typst 的", "西北工业大学学位论文"),
   title-en: "First Line \nSecond Line",

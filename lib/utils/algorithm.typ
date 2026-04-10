@@ -1,6 +1,28 @@
 #import "../utils/style.typ": 字号
 
 #let algorithm-figure = figure.where(kind: "algorithm")
+#let english-writing-state = state("nwpu-english-writing", false)
+
+#let localized-term(chinese, english) = context {
+  if english-writing-state.get() {
+    [#english]
+  } else {
+    [#chinese]
+  }
+}
+
+#let localized-field(chinese, english, value) = context {
+  if english-writing-state.get() {
+    [*#english:* #value]
+  } else {
+    [*#chinese：* #value]
+  }
+}
+
+#let with-english-writing(enabled, it) = {
+  english-writing-state.update(enabled)
+  it
+}
 
 #let algorithm-label(number, loc) = context {
   let heading-number = counter(heading).at(loc).first()
@@ -40,13 +62,13 @@
   let element = query(label).first()
   link(
     element.location(),
-    [算法 #algorithm-label(counter(algorithm-figure).at(element.location()).first(), element.location())],
+    [#localized-term("算法", "Algorithm") #algorithm-label(counter(algorithm-figure).at(element.location()).first(), element.location())],
   )
 }
 
 #let algorithm(title: none, input: none, output: none, steps: ()) = figure(
   kind: "algorithm",
-  supplement: [算法],
+  supplement: localized-term("算法", "Algorithm"),
   numbering: algorithm-numbering,
   outlined: false,
   caption: none,
@@ -59,16 +81,16 @@
     table.hline(y: 0, stroke: 1.5pt),
     table.cell(colspan: 2, align: left)[
       #set text(size: 字号.五号)
-      #strong[算法 #context algorithm-numbering(counter(algorithm-figure).get().first())] #title
+      #strong[#localized-term("算法", "Algorithm") #context algorithm-numbering(counter(algorithm-figure).get().first())] #title
     ],
     table.hline(y: 1, stroke: 0.5pt),
     table.cell(colspan: 2, align: left)[
       #set text(size: 字号.五号)
-      *输入：* #input
+      #localized-field("输入", "Input", input)
     ],
     table.cell(colspan: 2, align: left)[
       #set text(size: 字号.五号)
-      *输出：* #output
+      #localized-field("输出", "Output", output)
     ],
     ..algorithm-step-rows(steps),
     table.hline(y: 3 + steps.len(), stroke: 1.5pt),

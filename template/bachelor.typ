@@ -1,6 +1,7 @@
 ﻿#import "/template.typ": algorithm, algorithm-ref, bachelor-thesis-config, nwpu-thesis
 
 #let thesis-config = bachelor-thesis-config(
+  english-writing: false, // 是否将图表、算法等标签切换为英文
   title: ("基于 Typst 的西工大论文"),
   author: "航小天",
   major: "计算机科学与技术",

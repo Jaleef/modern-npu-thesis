@@ -16,7 +16,7 @@
 
 #### 方式一：直接克隆仓库（推荐）
 
-1. 克隆本仓库.
+1. 克隆本仓库。
 2. 使用 VS Code 打开项目，并安装 [Tinymist Typst](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist) 插件。
 3. 打开项目后：
    修改 [template/graduate.typ](template/graduate.typ) 可编辑研究生论文，
