@@ -1,4 +1,6 @@
 ﻿# 西北工业大学学位论文 `modern-npu-thesis`
+[![CI](https://github.com/1195343015/modern-npu-thesis/actions/workflows/test.yml/badge.svg)](https://github.com/1195343015/modern-npu-thesis/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > This project provides a Typst thesis template for Northwestern Polytechnical University.
 
