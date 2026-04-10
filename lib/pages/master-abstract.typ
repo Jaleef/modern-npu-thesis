@@ -35,6 +35,7 @@
     info.title = info.title.split("\n")
   }
 
+  pagebreak(weak: true, to: if twoside { "odd" })
 
   [
     #set par(leading: leading, spacing: spacing, justify: true)

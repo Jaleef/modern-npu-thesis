@@ -148,6 +148,15 @@
     #set par(leading: leading, spacing: spacing)
     #set outline(indent: level => indent.slice(0, calc.min(level + 1, indent.len())).sum())
     #show outline.entry: entry => {
+      let in-mainmatter-or-later = query(
+        selector(<__nwpu_mainmatter_start__>).before(entry.element.location()),
+      ).len() > 0
+      let entry-page-number = counter(page).at(entry.element.location()).first()
+      let entry-page-display = if is-graduate and not in-mainmatter-or-later {
+        text(font: "Times New Roman")[#numbering("I", entry-page-number)]
+      } else {
+        text(font: reference-font, size: reference-size)[#numbering("1", entry-page-number)]
+      }
       let is-appendix-entry = (
         query(selector(<appendix-start>).before(entry.element.location())).len()
         > query(selector(<appendix-end>).before(entry.element.location())).len()
@@ -182,7 +191,7 @@
               },
             )
             box(width: 1fr, inset: (x: .25em), fill.at(entry.level - 1, default: fill.last()))
-            entry.page()
+            entry-page-display
           },
           gap: 0pt,
         ),

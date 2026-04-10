@@ -562,6 +562,7 @@
   (cls.outline-page)(depth: outline-depth)
 
   // 3. 正文
+  [#box(width: 0pt, height: 0pt) <__nwpu_mainmatter_start__>]
   show: cls.mainmatter
   body
 
