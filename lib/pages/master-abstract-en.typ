@@ -3,6 +3,7 @@
 #import "../layouts/preface.typ": (
   preface-heading-above, preface-heading-below, preface-heading-size, preface-heading-weight,
   preface-heading-leading, preface-body-leading, preface-body-spacing, preface-body-first-line-indent,
+  preface-keywords-above,
 )
 
 #let master-abstract-en(
@@ -61,10 +62,10 @@
       #body
     ]
 
-    #v(1.5em)
-    #text(font: "Times New Roman", size: 字号.小四)[
-      #strong[Key words:] #(("",) + keywords.intersperse("; ")).sum()
-    ]
+#v(preface-keywords-above)
+#text(font: "Times New Roman", size: 字号.小四)[
+  #strong[Key words]#text(font: fonts.黑体, weight: "bold")[：]#(("",) + keywords.intersperse("; ")).sum()
+]
 
     #v(1fr)
 

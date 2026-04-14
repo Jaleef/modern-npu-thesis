@@ -1,6 +1,6 @@
 #import "../utils/style.typ": 字体, 字号
 #import "../utils/header.typ": header-render
-#import "../layouts/preface.typ": preface-heading-above, preface-heading-style, preface-body-leading, preface-body-spacing, preface-body-first-line-indent
+#import "../layouts/preface.typ": preface-heading-above, preface-heading-style, preface-body-leading, preface-body-spacing, preface-body-first-line-indent, preface-keywords-above
 
 #let master-abstract(
   doctype: "master",
@@ -51,10 +51,10 @@
       #body
     ]
 
-    #v(1.5em)
-    #h(2em)#text(font: fonts.黑体, size: 字号.小四)[关键词：]#text(font: fonts.宋体, size: 字号.小四)[#(
-      ("",) + keywords.intersperse("；")
-    ).sum()]
+#v(preface-keywords-above)
+#h(2em)#text(font: fonts.黑体, size: 字号.小四)[关键词：]#text(font: fonts.宋体, size: 字号.小四)[#(
+  ("",) + keywords.intersperse("；")
+).sum()]
 
     #v(1fr)
 

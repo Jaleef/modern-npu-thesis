@@ -14,6 +14,7 @@
 #let graduate-body-leading = 0.9em
 #let graduate-body-spacing = 0pt
 #let graduate-body-first-line-indent = (amount: 2em, all: true)
+#let graduate-keywords-above = 2.2em
 
 // 兼容旧名称的别名
 #let preface-heading-above = heading-above
@@ -22,6 +23,7 @@
 #let preface-body-leading = graduate-body-leading
 #let preface-body-spacing = graduate-body-spacing
 #let preface-body-first-line-indent = graduate-body-first-line-indent
+#let preface-keywords-above = graduate-keywords-above
 
 // 标题字体配置
 #let preface-heading-font = fonts => fonts.黑体  // 函数，传入 fonts 返回字体
