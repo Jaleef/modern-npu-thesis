@@ -39,6 +39,12 @@
   heading_below: (28pt, 12pt, 12pt),
 )
 
+#let graduate_style_defaults = (
+  heading_leading: (0.9em, 0.9em, 0.9em),
+  heading_above: (22pt, 15pt, 12pt),
+  heading_below: (22pt, 12pt, 10pt),
+)
+
 #let bachelor-thesis-config(
   degree: "academic",
   anonymous: false,
@@ -105,6 +111,9 @@
   colored-cover: false,
   graduate_leading: 0.9em,
   graduate_spacing: 1.0em,
+  graduate_heading_leading: graduate_style_defaults.heading_leading,
+  graduate_heading_above: graduate_style_defaults.heading_above,
+  graduate_heading_below: graduate_style_defaults.heading_below,
   fonts: (:),
   title: ("基于 Typst 的", "西北工业大学学位论文"),
   title-en: "NPU Thesis Template for Typst",
@@ -156,6 +165,9 @@
     colored-cover: colored-cover,
     graduate_leading: graduate_leading,
     graduate_spacing: graduate_spacing,
+    graduate_heading_leading: graduate_heading_leading,
+    graduate_heading_above: graduate_heading_above,
+    graduate_heading_below: graduate_heading_below,
     fonts: fonts,
     info: (
       title: title,
@@ -197,6 +209,9 @@
   english-writing: false, // 是否使用英文论文标签
   graduate_leading: 0.9em, // 研究生摘要与正文统一行距
   graduate_spacing: 1.0em, // 研究生摘要与正文统一段间距
+  graduate_heading_leading: graduate_style_defaults.heading_leading, // 研究生正文各级标题行距
+  graduate_heading_above: graduate_style_defaults.heading_above, // 研究生正文各级标题段前距
+  graduate_heading_below: graduate_style_defaults.heading_below, // 研究生正文各级标题段后距
   bachelor_leading: bachelor_style_defaults.leading, // 本科论文统一行距增量
   bachelor_spacing: bachelor_style_defaults.spacing, // 本科论文统一段间距
   bachelor_heading_leading: bachelor_style_defaults.heading_leading, // 本科正文各级标题行距
@@ -277,6 +292,9 @@
     english-writing: english-writing,
     graduate_leading: graduate_leading,
     graduate_spacing: graduate_spacing,
+    graduate_heading_leading: graduate_heading_leading,
+    graduate_heading_above: graduate_heading_above,
+    graduate_heading_below: graduate_heading_below,
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
@@ -313,6 +331,9 @@
           english-writing: english-writing,
           graduate-leading: graduate_leading,
           spacing: graduate_spacing,
+          heading_leading: graduate_heading_leading,
+          heading-above: graduate_heading_above,
+          heading-below: graduate_heading_below,
           display-header: true,
           bachelor_leading: bachelor_leading,
           bachelor_spacing: bachelor_spacing,
@@ -329,6 +350,9 @@
           english-writing: english-writing,
           graduate-leading: graduate_leading,
           spacing: graduate_spacing,
+          heading_leading: graduate_heading_leading,
+          heading-above: graduate_heading_above,
+          heading-below: graduate_heading_below,
           display-header: true,
           bachelor_leading: bachelor_leading,
           bachelor_spacing: bachelor_spacing,
@@ -516,6 +540,9 @@
   english-writing: false,
   graduate_leading: 0.9em,
   graduate_spacing: 1.0em,
+  graduate_heading_leading: graduate_style_defaults.heading_leading,
+  graduate_heading_above: graduate_style_defaults.heading_above,
+  graduate_heading_below: graduate_style_defaults.heading_below,
   bachelor_leading: bachelor_style_defaults.leading,
   bachelor_spacing: bachelor_style_defaults.spacing,
   bachelor_heading_leading: bachelor_style_defaults.heading_leading,
@@ -571,6 +598,9 @@
     english-writing: english-writing,
     graduate_leading: graduate_leading,
     graduate_spacing: graduate_spacing,
+    graduate_heading_leading: graduate_heading_leading,
+    graduate_heading_above: graduate_heading_above,
+    graduate_heading_below: graduate_heading_below,
     bachelor_leading: bachelor_leading,
     bachelor_spacing: bachelor_spacing,
     bachelor_heading_leading: bachelor_heading_leading,
