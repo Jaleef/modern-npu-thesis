@@ -1,4 +1,4 @@
-﻿#import "/template.typ": algorithm, algorithm-ref, bachelor-thesis-config, equation-note, nwpu-thesis,subfigure-caption
+﻿#import "/template.typ": algorithm, algorithm-ref, bachelor-thesis-config, equation-note, nwpu-thesis, subfigure-caption
 
 #let thesis-config = bachelor-thesis-config(
   title: ("基于 Typst 的西工大论文模板"),
