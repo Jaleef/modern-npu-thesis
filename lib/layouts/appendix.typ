@@ -62,24 +62,20 @@
     }
 
     show heading: i-figured.reset-counters
-    show figure: i-figured.show-figure.with(numbering: if appendix-headings.len() > 1 { "A-1" } else { "1" })
+    show figure: i-figured.show-figure.with(numbering: appendix-prefix + "-1")
     set figure(supplement: if english-writing { [Figure] } else { [图] })
     show figure.where(kind: table): set figure(supplement: if english-writing { [Table] } else { [表] })
     set math.equation(supplement: if english-writing { [Equation] } else { [式] })
     show math.equation.where(block: true): if doctype == "bachelor" {
       i-figured.show-equation.with(
         numbering: (..nums) => {
-          let eq-number = if appendix-headings.len() > 1 {
-            numbering("A-1", ..nums)
-          } else {
-            numbering("1", ..nums)
-          }
+          let eq-number = numbering(appendix-prefix + "-1", ..nums)
           text(font: fonts.宋体)[（#text(font: "Times New Roman")[#eq-number]）]
         },
       )
     } else {
       i-figured.show-equation.with(
-        numbering: if appendix-headings.len() > 1 { "(A-1)" } else { "(1)" },
+        numbering: "(" + appendix-prefix + "-1)",
       )
     }
 
