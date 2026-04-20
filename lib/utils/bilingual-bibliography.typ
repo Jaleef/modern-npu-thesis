@@ -231,7 +231,6 @@
 }
 
 #let bilingual-bibliography(
-  bibliography: none,
   doctype: "master",
   twoside: false,
   english-writing: false,
@@ -243,17 +242,6 @@
   title-above: auto,
   title-below: auto,
   full: false,
-  style: "gb-7714-2015-numeric",
-  label-shift: 2.1em,
-  label-gap: 0.5em,
-  content-shift: -0.85em,
-  content-hanging-indent: -4.3em,
-  single-digit-content-hanging-indent: auto,
-  double-digit-content-hanging-indent: -4.8em,
-  triple-digit-content-hanging-indent: -5.2em,
-  mapping: (:),
-  extra-comma-before-et-al-trans: false,
-  allow-comma-in-name: false,
 ) = {
   fonts = 字体 + fonts
   let is-graduate = doctype == "master" or doctype == "doctor"

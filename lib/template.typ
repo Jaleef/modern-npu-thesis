@@ -605,7 +605,6 @@
     // 参考文献页
     bilingual-bibliography: (..args) => {
       bilingual-bibliography(
-        bibliography: bibliography,
         doctype: doctype,
         twoside: twoside,
         english-writing: english-writing,
