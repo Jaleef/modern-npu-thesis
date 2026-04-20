@@ -34,6 +34,23 @@
   )
 }
 
+#let is-custom-other-entry(entry) = {
+  let raw-type = lower(str(entry.entry-type))
+  let fields = entry.fields
+  let subtype = lower(str(fields.at("entrysubtype", default: "")))
+  let note = lower(str(fields.at("note", default: "")))
+  let mark = str(fields.at("mark", default: fields.at("usera", default: "")))
+  let medium = str(fields.at("medium", default: ""))
+  let url = str(fields.at("url", default: fields.at("howpublished", default: "")))
+
+  return (
+    raw-type == "other"
+      or subtype == "other"
+      or note == "other"
+      or (raw-type in ("misc", "unknown") and url != "" and mark == "" and medium == "")
+  )
+}
+
 #let render-custom-patent(entry) = {
   let fields = entry.fields
   let owner = normalize-patent-owner(fields.at("author", default: fields.at("holder", default: "")))
@@ -121,6 +138,39 @@
     }
   } else {
     body += [. #entry.ref-label]
+  }
+  body
+}
+
+#let render-custom-other(entry) = {
+  let fields = entry.fields
+  let lang = entry.lang
+  let author = normalize-biblio-names(fields.at("author", default: fields.at("organization", default: "")), lang: lang)
+  let title = fields.at("title", default: "")
+  let publish-date = str(fields.at("date", default: fields.at("year", default: fields.at("issued", default: fields.at("updated", default: "")))))
+  let cited-date = str(fields.at("urldate", default: fields.at("accessed", default: "")))
+  let url = str(fields.at("url", default: fields.at("howpublished", default: "")))
+
+  let body = []
+  if author != "" {
+    body += [#author. ]
+  }
+  if title != "" {
+    body += [#title. ]
+  }
+  if publish-date != "" {
+    body += [#publish-date]
+    if cited-date != "" {
+      body += [/#cited-date]
+    }
+    body += [. ]
+  } else if cited-date != "" {
+    body += [/#cited-date. ]
+  }
+  if url != "" {
+    body += [#url. #entry.ref-label]
+  } else {
+    body += [#entry.ref-label]
   }
   body
 }
@@ -257,6 +307,8 @@
           [[#entry.order]#h(0.5em)#render-custom-patent(entry)]
         } else if entry.entry-type == "inproceedings" or entry.entry-type == "conference" {
           [[#entry.order]#h(0.5em)#render-custom-conference(entry, doctype: doctype)]
+        } else if is-custom-other-entry(entry) {
+          [[#entry.order]#h(0.5em)#render-custom-other(entry)]
         } else if is-custom-standard-entry(entry) {
           [[#entry.order]#h(0.5em)#render-custom-standard(entry)]
         } else {
