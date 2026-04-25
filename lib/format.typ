@@ -45,12 +45,12 @@
 // =========================================================
 #let body-format = (
   graduate: (
-    leading: 0.9em,
-    spacing: 1.0em,
+    leading: 10pt,
+    spacing: 10pt,
     first-line-indent: (amount: 2em, all: true),
   ),
   bachelor: (
-    leading: 11pt,
+    leading: 10pt,
     spacing: 10pt,
     first-line-indent: (amount: 26pt, all: true),
   ),
@@ -63,14 +63,14 @@
   graduate: (
     size: (字号.三号, 字号.四号, 字号.小四),
     weight: ("regular", "regular", "regular"),
-    leading: (0.9em, 0.9em, 0.9em),
-    above: (2 * 14pt - 0.7em, 2 * 15.6pt - 0.7em, 2 * 15.6pt - 0.7em),
-    below: (2 * 17pt - 0.7em, 1.5 * 15.6pt - 0.7em, 1.5 * 15.6pt - 0.7em),
+    leading: (10pt, 10pt, 10pt),
+    above: (2 * 14pt - 0.7em, 16pt, 16pt),
+    below: (2 * 17pt - 0.7em, 12pt, 12pt),
   ),
   bachelor: (
     size: (字号.三号, 字号.四号, 字号.小四),
     weight: ("regular", "regular", "regular"),
-    leading: (11pt, 11pt, 11pt),
+    leading: (10pt, 10pt, 10pt),
     above: (28pt, 12pt, 12pt),
     below: (28pt, 12pt, 12pt),
   ),
