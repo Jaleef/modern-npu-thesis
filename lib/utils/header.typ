@@ -57,15 +57,3 @@
     #line(length: 100%, stroke: header-format.bachelor.headrule + black)
   ]
 }
-
-#let add-blank-even-page(doctype: "master", fonts: (:), terminal: false) = {
-  fonts = 字体 + fonts
-  context {
-    let current-page = counter(page).get().first()
-    if calc.rem(current-page, 2) == 1 {
-      pagebreak(weak: not terminal)
-      set page(header: header-render([#graduate-header-title(doctype)], fonts: fonts))
-      v(1fr)
-    }
-  }
-}

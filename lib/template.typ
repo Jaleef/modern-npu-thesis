@@ -4,7 +4,6 @@
 #import "layouts/preface.typ": preface
 #import "layouts/mainmatter.typ": mainmatter
 #import "layouts/appendix.typ": appendix as appendix-layout
-#import "utils/header.typ": add-blank-even-page
 #import "utils/header.typ": graduate-header-title, header-render
 #import "pages/bachelor-cover.typ": bachelor-cover
 #import "pages/master-cover.typ": master-cover
@@ -16,7 +15,6 @@
 #import "pages/acknowledgement.typ": acknowledgement
 #import "pages/design-summary.typ": design-summary as design-summary-page
 #import "pages/academic-achievements.typ": academic-achievements
-#import "utils/custom-cuti.typ": *
 #import "@preview/gb7714-bilingual:0.2.3": init-gb7714
 #import "utils/bilingual-bibliography.typ": bilingual-bibliography
 #import "utils/custom-numbering.typ": custom-numbering
@@ -623,14 +621,6 @@
         title-leading: bachelor-first-level-value(graduate_heading_leading),
         title-above: bachelor-first-level-value(graduate_heading_above),
         title-below: bachelor-first-level-value(graduate_heading_below),
-        fonts: fonts + args.named().at("fonts", default: (:)),
-        ..args,
-      )
-    },
-    // 空白偶数页（双面打印用）
-    add-blank-even-page: (..args) => {
-      add-blank-even-page(
-        doctype: doctype,
         fonts: fonts + args.named().at("fonts", default: (:)),
         ..args,
       )

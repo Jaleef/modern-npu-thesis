@@ -1,7 +1,6 @@
 #import "../utils/datetime-display.typ": (
   datetime-display, datetime-en-display, datetime-year-month, datetime-year-month-en,
 )
-#import "../utils/justify-text.typ": justify-text
 #import "../utils/style.typ": 字体, 字号
 
 // 西北工业大学研究生封面（硕士/博士）

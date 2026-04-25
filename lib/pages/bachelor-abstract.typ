@@ -1,6 +1,4 @@
-#import "../utils/custom-cuti.typ": fakebold
 #import "../utils/style.typ": 字号, 字体
-#import "../utils/double-underline.typ": double-underline
 #import "../layouts/preface.typ": preface-heading-style
 
 // 西北工业大学本科生中文摘要页
