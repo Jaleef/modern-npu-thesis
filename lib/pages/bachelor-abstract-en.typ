@@ -5,7 +5,6 @@
 // 西北工业大学本科生英文摘要页
 #let bachelor-abstract-en(
   // documentclass 传入的参数
-  anonymous: false,
   twoside: false,
   fonts: (:),
   info: (:),
@@ -13,7 +12,7 @@
   keywords: (),
   outline-title: "ABSTRACT",
   outlined: false,
-  anonymous-info-keys: ("author-en", "supervisor-en"),
+
   leading: auto,
   spacing: auto,
   body-font: auto,

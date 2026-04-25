@@ -9,14 +9,13 @@
 #let master-abstract-en(
   doctype: "master",
   degree: "academic",
-  anonymous: false,
   twoside: false,
   fonts: (:),
   info: (:),
   keywords: (),
   outline-title: "Abstract",
   outlined: true,
-  anonymous-info-keys: ("author-en", "supervisor-en"),
+
   leading: auto,
   spacing: auto,
   body-font: auto,

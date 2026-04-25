@@ -6,14 +6,12 @@
 #let master-abstract(
   doctype: "master",
   degree: "academic",
-  anonymous: false,
   twoside: false,
   fonts: (:),
-  info: (:),
   keywords: (),
   outline-title: "摘　要",
   outlined: true,
-  anonymous-info-keys: ("author", "grade", "supervisor"),
+
   leading: auto,
   spacing: auto,
   body-font: auto,
@@ -33,21 +31,6 @@
   if title-leading == auto { title-leading = heading-format.graduate.leading.first() }
   if title-above == auto { title-above = heading-format.graduate.above.first() }
   if title-below == auto { title-below = heading-format.graduate.below.first() }
-  info = (
-    (
-      title: ("基于 Typst 的", "西北工业大学学位论文"),
-      author: "张三",
-      grade: "20XX",
-      department: "某学院",
-      major: "某专业",
-      supervisor: ("李四", "教授"),
-    )
-      + info
-  )
-
-  if type(info.title) == str {
-    info.title = info.title.split("\n")
-  }
 
   pagebreak(weak: true, to: if twoside { "odd" })
 

@@ -5,15 +5,12 @@
 // 西北工业大学本科生中文摘要页
 #let bachelor-abstract(
   // documentclass 传入的参数
-  anonymous: false,
   twoside: false,
   fonts: (:),
-  info: (:),
   // 其他参数
   keywords: (),
   outline-title: "摘 要",
   outlined: false,
-  anonymous-info-keys: ("author", "supervisor"),
   leading: auto,
   spacing: auto,
   body-font: auto,
@@ -32,26 +29,6 @@
   if title-leading == auto { title-leading = heading-format.bachelor.leading.first() }
   if title-above == auto { title-above = heading-format.bachelor.above.first() }
   if title-below == auto { title-below = heading-format.bachelor.below.first() }
-  info = (
-    title: ("基于 Typst 的", "西北工业大学毕业论文"),
-    author: "张三",
-    department: "某学院",
-    major: "某专业",
-    supervisor: ("李四", "教授"),
-  ) + info
-
-  // 2.  对参数进行处理
-  // 2.1 如果是字符串，则使用换行符将标题分隔为列表
-  if type(info.title) == str {
-    info.title = info.title.split("\n")
-  }
-
-  // 3.  内置辅助函数
-  let info-value(key, body) = {
-    if not anonymous or (key not in anonymous-info-keys) {
-      body
-    }
-  }
 
   // 4.  正式渲染
   pagebreak(weak: true, to: if twoside { "odd" })

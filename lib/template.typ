@@ -525,7 +525,6 @@
         master-abstract(
           doctype: doctype,
           degree: degree,
-          anonymous: anonymous,
           twoside: twoside,
           leading: graduate_leading,
           spacing: graduate_spacing,
@@ -537,11 +536,9 @@
           keywords-above: graduate_keywords_above,
           ..args,
           fonts: fonts + args.named().at("fonts", default: (:)),
-          info: info + args.named().at("info", default: (:)),
         )
       } else {
         bachelor-abstract(
-          anonymous: anonymous,
           twoside: twoside,
           leading: bachelor_leading,
           spacing: bachelor_spacing,
@@ -552,7 +549,6 @@
           title-below: bachelor-first-level-value(bachelor_heading_below),
           ..args,
           fonts: fonts + args.named().at("fonts", default: (:)),
-          info: info + args.named().at("info", default: (:)),
         )
       }
     },
@@ -562,7 +558,6 @@
         master-abstract-en(
           doctype: doctype,
           degree: degree,
-          anonymous: anonymous,
           twoside: twoside,
           leading: graduate_leading,
           spacing: graduate_spacing,
@@ -576,7 +571,6 @@
         )
       } else {
         bachelor-abstract-en(
-          anonymous: anonymous,
           twoside: twoside,
           leading: bachelor_leading,
           spacing: bachelor_spacing,
