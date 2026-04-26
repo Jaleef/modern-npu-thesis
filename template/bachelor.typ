@@ -1,4 +1,4 @@
-﻿#import "/template.typ": algorithm, algorithm-ref, bachelor-thesis-config, equation-note, nwpu-thesis, subfigure-caption
+﻿#import "/template.typ": algorithm, algorithm-ref, bachelor-thesis-config, equation-note, indent, nwpu-thesis, subfigure-caption
 #import "@preview/gb7714-bilingual:0.2.3": multicite
 
 #let thesis-config = bachelor-thesis-config(
@@ -137,19 +137,20 @@
     title: [二分查找算法],
     input: [有序数组 $A$，目标值 target。],
     output: [目标值下标，不存在则返回 -1。],
-    steps: (
-      [left := 0],
-      [right := len(A) - 1],
-      [while left <= right do],
-      [  mid := floor((left + right) / 2)],
-      [  if A.at(mid) == target],
-      [    return mid],
-      [  else if A.at(mid) < target],
-      [    left := mid + 1],
-      [  else],
-      [    right := mid - 1],
-      [return -1],
+    [left := 0],
+    [right := len(A) - 1],
+    [*while* left <= right *do*],
+    indent(
+      [mid := floor((left + right) / 2)],
+      [*if* A.at(mid) == target *then*],
+      indent([return mid]),
+      [*else if* A.at(mid) < target *then*],
+      indent([left := mid + 1]),
+      [*else*],
+      indent([right := mid - 1]),
+      [*end*],
     ),
+    [return -1],
   ) <alg:binary-search>
 
   == 参考文献

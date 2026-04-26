@@ -1,5 +1,5 @@
 #import "layouts/doc.typ": doc
-#import "utils/algorithm.typ": algorithm, algorithm-ref, with-english-writing
+#import "utils/algorithm.typ": algorithm, algorithm-ref, with-english-writing, indent, no-number, pseudocode-list
 #import "utils/equation-note.typ": equation-note
 #import "layouts/preface.typ": preface
 #import "layouts/mainmatter.typ": mainmatter
@@ -24,7 +24,6 @@
 #import "utils/style.typ": 字体, 字号
 #import "format.typ": body-format, heading-format, header-format
 
-#let indent = h(2em)
 #let subfigure-caption(body) = text(size: 字号.五号)[#body]
 #let appendix(title: auto, body) = (
   title: title,

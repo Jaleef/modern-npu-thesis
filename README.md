@@ -34,6 +34,7 @@
 本模板依赖以下 Typst 包，具体用法有疑惑可直接查阅相关文档：
 
 - [`gb7714-bilingual`](https://typst.app/universe/package/gb7714-bilingual) — GB/T 7714 双语参考文献格式
+- [`lovelace`](https://typst.app/universe/package/lovelace) — 伪代码/算法排版（`algorithm()`）
 - [`cap-able`](https://typst.app/universe/package/cap-able) — 研究生三线表（`captab()`）
 
 参考文献方面，模板针对西北工业大学本科、研究生论文格式要求做了少量微调。用户通常只需要维护 [template/bib](template/bib) 目录下的 BibTeX 文件，模板会自动处理文献引用和参考文献列表。目前 `gb7714-bilingual` 包仍有一些细节问题会影响个别文献类型的输出效果，相关问题已向上游作者提交 issue，待上游修复发布后模板会尽快同步调整。

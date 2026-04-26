@@ -1,4 +1,5 @@
 #import "../utils/style.typ": 字号
+#import "@preview/lovelace:0.3.1": pseudocode as _pseudocode, indent, no-number, pseudocode-list
 
 #let algorithm-figure = figure.where(kind: "algorithm")
 #let english-writing-state = state("nwpu-english-writing", false)
@@ -44,15 +45,6 @@
 
 #let algorithm-numbering(number) = context algorithm-label(number, here())
 
-#let algorithm-step-rows(steps) = {
-  let rows = ()
-  for (index, step) in steps.enumerate() {
-    rows.push([#(index + 1)])
-    rows.push(step)
-  }
-  rows
-}
-
 #let algorithm-ref(label) = context {
   let element = query(label).first()
   link(
@@ -61,33 +53,48 @@
   )
 }
 
-#let algorithm(title: none, input: none, output: none, steps: ()) = figure(
-  kind: "algorithm",
-  supplement: localized-term("算法", "Algorithm"),
-  numbering: algorithm-numbering,
-  outlined: false,
-  caption: none,
-  table(
-    columns: (2.8em, 1fr),
-    stroke: none,
-    inset: (x: 0.3em, y: 0.4em),
-    align: (right, left),
+#let algorithm(title: none, input: none, output: none, ..body) = {
+  let preamble = ()
+  if input != none {
+    preamble.push(no-number[#localized-field("输入", "Input", input)])
+  }
+  if output != none {
+    preamble.push(no-number[#localized-field("输出", "Output", output)])
+  }
 
-    table.hline(y: 0, stroke: 1.5pt),
-    table.cell(colspan: 2, align: left)[
-      #set text(size: 字号.五号)
-      #strong[#localized-term("算法", "Algorithm") #context algorithm-numbering(counter(algorithm-figure).get().first())] #title
-    ],
-    table.hline(y: 1, stroke: 0.5pt),
-    table.cell(colspan: 2, align: left)[
-      #set text(size: 字号.五号)
-      #localized-field("输入", "Input", input)
-    ],
-    table.cell(colspan: 2, align: left)[
-      #set text(size: 字号.五号)
-      #localized-field("输出", "Output", output)
-    ],
-    ..algorithm-step-rows(steps),
-    table.hline(y: 3 + steps.len(), stroke: 1.5pt),
-  ),
-)
+  figure(
+    kind: "algorithm",
+    supplement: localized-term("算法", "Algorithm"),
+    numbering: algorithm-numbering,
+    outlined: false,
+    caption: none,
+    {
+      show grid: it => {
+        let cols = it.columns
+        if type(cols) == array and cols.all(c => c == auto) and cols.len() > 0 {
+          let f = it.fields()
+          grid(
+            columns: cols.slice(0, cols.len() - 1) + (1fr,),
+            column-gutter: f.at("column-gutter", default: 0pt),
+            row-gutter: f.at("row-gutter", default: 0pt),
+            ..f.at("children", default: ()),
+          )
+        } else {
+          it
+        }
+      }
+      _pseudocode(
+        booktabs: true,
+        booktabs-stroke: 1pt + black,
+        line-numbering: "1",
+        stroke: none,
+        title: context {
+          let num = algorithm-numbering(counter(algorithm-figure).get().first())
+          [*#localized-term("算法", "Algorithm") #num* #title]
+        },
+        ..preamble,
+        ..body,
+      )
+    },
+  )
+}
