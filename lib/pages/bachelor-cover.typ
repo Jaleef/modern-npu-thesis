@@ -13,17 +13,8 @@
   title-line-width: 8cm,
   datetime-display: datetime-year-month,
 ) = {
-  // 1.  默认参数
-  info = (
-    title: "基于 Typst 的西北工业大学毕业设计（论文）",
-    author: "张三",
-    major: "某专业",
-    supervisor: ("李四", "教授"),
-    submit-date: (year: 2026, month: 6),
-  ) + info
-
-  // 2.  对参数进行处理
-  // 2.1 处理提交日期
+  // 参数处理
+  // 处理提交日期
   // submit-date 支持 datetime 或 (year: 2026, month: 3) 格式
   if type(info.submit-date) == dictionary {
     info.submit-date = datetime(year: info.submit-date.year, month: info.submit-date.month, day: 1)

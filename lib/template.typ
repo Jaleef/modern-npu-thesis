@@ -10,7 +10,7 @@
 #import "pages/bachelor-outline.typ": bachelor-outline
 #import "pages/graduate-outline.typ": graduate-outline
 #import "pages/backmatter-page.typ": backmatter-page
-#import "@preview/gb7714-bilingual:0.2.3": init-gb7714
+#import "@preview/gb7714-bilingual:0.2.3": init-gb7714, multicite
 #import "utils/bilingual-bibliography.typ": bilingual-bibliography
 #import "utils/custom-heading.typ": active-heading, heading-display
 #import "@preview/i-figured:0.2.4": show-equation, show-figure
@@ -74,64 +74,37 @@
   }
 }
 
-#let bachelor-thesis-config(
-  degree: "academic",
-  anonymous: false,
-  english-writing: false,
-  title: ("基于 Typst 的", "西北工业大学毕业论文"),
-  author: "张三",
-  major: "某专业",
-  supervisor: ("李四", "教授"),
-  submit-date: (year: 2026, month: 6),
-  abstract: none,
-  keywords: (),
-  abstract-en: none,
-  keywords-en: (),
-  acknowledgement: none,
-  appendix: none,
-  design_summary: none,
-) = {
-  (
-    doctype: "bachelor",
-    degree: degree,
-    anonymous: anonymous,
-    english-writing: english-writing,
-    colored-cover: false,
-    info: (
-      title: title,
-      author: author,
-      major: major,
-      supervisor: supervisor,
-      submit-date: submit-date,
-    ),
-    abstract: abstract,
-    keywords: keywords,
-    abstract-en: abstract-en,
-    keywords-en: keywords-en,
-    acknowledgement: acknowledgement,
-    appendix: appendix,
-    design_summary: design_summary,
-  )
+// ========== 命令行参数支持 ==========
+#let _parse-bool(value, default) = {
+  if value == none { default } else if value == "true" or value == "1" {
+    true
+  } else if value == "false" or value == "0" { false } else { default }
 }
 
-#let graduate-thesis-config(
-  doctype: "master",
-  degree: "academic",
+// 主配置函数
+#let nwpu-thesis(
+  // 文档类型
+  doctype: "bachelor", // "bachelor" | "master" | "doctor"
+  degree: "academic", // "academic" | "professional"
   anonymous: false,
   english-writing: false,
   colored-cover: false,
+  // 基本信息（本科 & 研究生共用）
   title: ("基于 Typst 的", "西北工业大学学位论文"),
+  author: "张三",
+  major: "某专业",
+  supervisor: ("李四", "教授"),
+  submit-date: datetime.today(),
+  // 研究生额外信息
   title-en: "NPU Thesis Template for Typst",
   student-id: "1234567890",
   class-no: "O643.12",
-  author: "张三",
   author-en: "Zhang San",
   department: "某学院",
-  major: "某专业",
   major-en: "XX",
-  supervisor: ("李四", "教授"),
   supervisor-en: "Li Si",
-  submit-date: datetime.today(),
+  secret-level: "公开",
+  school-code: "10699",
   reviewers: (
     (name: "", title: "", unit: ""),
     (name: "", title: "", unit: ""),
@@ -147,6 +120,7 @@
     ),
     secretary: (name: "", title: "", unit: ""),
   ),
+  // 页面内容
   abstract: none,
   keywords: (),
   funding: none,
@@ -158,73 +132,10 @@
   appendix: none,
   appendices: none,
   scan-declaration: none,
-) = {
-  (
-    doctype: doctype,
-    degree: degree,
-    anonymous: anonymous,
-    english-writing: english-writing,
-    colored-cover: colored-cover,
-    info: (
-      title: title,
-      title-en: title-en,
-      student-id: student-id,
-      class-no: class-no,
-      author: author,
-      author-en: author-en,
-      department: department,
-      major: major,
-      major-en: major-en,
-      supervisor: supervisor,
-      supervisor-en: supervisor-en,
-      submit-date: submit-date,
-      reviewers: reviewers,
-      defence-committee: defence-committee,
-    ),
-    abstract: abstract,
-    keywords: keywords,
-    funding: funding,
-    abstract-en: abstract-en,
-    keywords-en: keywords-en,
-    funding-en: funding-en,
-    acknowledgement: acknowledgement,
-    academic-achievements: academic-achievements,
-    appendix: appendix,
-    appendices: appendices,
-    scan-declaration: scan-declaration,
-  )
-}
-
-// ========== 命令行参数支持 ==========
-#let _parse-bool(value, default) = {
-  if value == none { default } else if value == "true" or value == "1" {
-    true
-  } else if value == "false" or value == "0" { false } else { default }
-}
-
-// 主配置函数（借鉴自 pkuthss-typst，提供更简洁的接口）
-#let nwpu-thesis(
-  doctype: "bachelor", // "bachelor" | "master" | "doctor"
-  degree: "academic", // "academic" | "professional"
-  english-writing: false,
-  colored-cover: false,
-  anonymous: false,
-  info: (:),
-  bibliography: none,
-  // 页面控制
-  abstract: none,
-  keywords: (),
-  funding: none,
-  abstract-en: none,
-  keywords-en: (),
-  funding-en: none,
-  acknowledgement: none,
-  academic-achievements: none,
-  scan-declaration: none,
-  appendix: none,
-  appendices: none,
   design_summary: none,
-  // 文档内容
+  bibliography: none,
+  info: (:),
+  // 文档正文
   body,
 ) = {
   if bibliography == none {
@@ -233,11 +144,7 @@
 
   // 命令行参数覆盖
   let anonymous = _parse-bool(sys.inputs.at("anonymous", default: none), anonymous)
-  let effective_twoside = if doctype == "bachelor" {
-    false
-  } else {
-    _parse-bool(sys.inputs.at("twoside", default: none), true)
-  }
+  let effective_twoside = doctype != "bachelor"
   let english-writing = _parse-bool(sys.inputs.at("english-writing", default: none), english-writing)
   let colored-cover = _parse-bool(sys.inputs.at("colored-cover", default: none), colored-cover)
   let graduate-appendix-items = normalize-graduate-appendix-items(
@@ -260,47 +167,24 @@
   // 默认参数
   let fonts = 字体
   info = (
-    (
-      title: ("基于 Typst 的", "西北工业大学学位论文"),
-      title-en: "NPU Thesis Template for Typst",
-      student-id: "1234567890",
-      author: "张三",
-      author-en: "Zhang San",
-      department: "某学院",
-      department-en: "XX School",
-      major: "某专业",
-      major-en: "XX",
-      supervisor: ("李四", "教授"),
-      supervisor-en: "Li Si",
-      submit-date: datetime.today(),
-      reviewer: ("某某某 教授", "某某某 教授"),
-      defend-date: datetime.today(),
-      class-no: "O643.12",
-      secret-level: "公开",
-      school-code: "10699",
-      degree: auto,
-      degree-en: auto,
-      // 评阅人名单，每人包含 name、title、unit
-      reviewers: (
-        (name: "", title: "", unit: ""),
-        (name: "", title: "", unit: ""),
-        (name: "", title: "", unit: ""),
-      ),
-      // 答辩委员会信息
-      defence-committee: (
-        date: datetime.today(),
-        chairman: (name: "", title: "", unit: ""),
-        members: (
-          (name: "", title: "", unit: ""),
-          (name: "", title: "", unit: ""),
-          (name: "", title: "", unit: ""),
-          (name: "", title: "", unit: ""),
-        ),
-        secretary: (name: "", title: "", unit: ""),
-      ),
-    )
-      + info
-  )
+    title: title,
+    title-en: title-en,
+    student-id: student-id,
+    class-no: class-no,
+    author: author,
+    author-en: author-en,
+    department: department,
+    major: major,
+    major-en: major-en,
+    supervisor: supervisor,
+    supervisor-en: supervisor-en,
+    submit-date: submit-date,
+    secret-level: secret-level,
+    school-code: school-code,
+    degree: auto,
+    reviewers: reviewers,
+    defence-committee: defence-committee,
+  ) + info
 
   let cls = (
     doc: (..args) => {

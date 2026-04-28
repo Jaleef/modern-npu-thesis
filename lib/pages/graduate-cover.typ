@@ -16,7 +16,7 @@
   // 其他参数
   stroke-width: 0.5pt,
   min-title-lines: 2,
-  min-reviewer-lines: 5,
+
   info-inset: (x: 0pt, bottom: 0.5pt),
   meta-info-inset: (x: 0pt, bottom: 2pt),
   defence-info-inset: (x: 0pt, bottom: 0pt),
@@ -34,23 +34,7 @@
   ),
   datetime-display: datetime-display,
 ) = {
-  // 1.  默认参数
-  info = (
-    (
-      title: ("基于 Typst 的", "西北工业大学学位论文"),
-      grade: "20XX",
-      student-id: "1234567890",
-      author: "张三",
-      department: "某学院",
-      major: "某专业",
-      supervisor: ("李四", "教授"),
-      submit-date: datetime.today(),
-      class-no: "",
-    )
-      + info
-  )
-  
-  // 2.  对参数进行处理
+  // 对参数进行处理
   // 2.1 如果是字符串，则使用换行符将标题分隔为列表
   if type(info.title) == str {
     info.title = info.title.split("\n")
@@ -58,18 +42,14 @@
   if type(info.title-en) == str {
     info.title-en = info.title-en.split("\n")
   }
-  // 2.2 根据 min-title-lines 和 min-reviewer-lines 填充标题和评阅人
+  // 2.2 根据 min-title-lines 填充标题
   info.title = info.title + range(min-title-lines - info.title.len()).map(it => "　")
-  info.reviewer = info.reviewer + range(min-reviewer-lines - info.reviewer.len()).map(it => "　")
   // 2.3 处理日期
   // submit-date 支持 datetime 或 (year: 2026, month: 3) 格式
   if type(info.submit-date) == dictionary {
     info.submit-date = datetime(year: info.submit-date.year, month: info.submit-date.month, day: 1)
   }
   assert(type(info.submit-date) == datetime, message: "submit-date must be datetime or (year, month) dictionary.")
-  if type(info.defend-date) == datetime {
-    info.defend-date = datetime-display(info.defend-date)
-  }
   // 2.4 处理 degree
   if info.degree == auto {
     if doctype == "doctor" {
