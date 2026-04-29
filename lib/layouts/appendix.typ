@@ -1,12 +1,11 @@
-#import "@preview/i-figured:0.2.4"
 #import "@preview/cap-able:0.0.2": captab-style, capfig-style
-#import "../utils/style.typ": 字号
-#import "../utils/custom-numbering.typ": custom-numbering
+#import "../utils/custom-numbering.typ": custom-numbering, show-equation-handler, figure-show-rule
 
 // 附录布局
 #let appendix(
   doctype: "bachelor",
   english-writing: false,
+  leading: 0pt,
   it,
 ) = {
   let appendix-label = if english-writing {
@@ -17,45 +16,23 @@
     "附录"
   }
 
-  set heading(numbering: if doctype == "bachelor" {
-    custom-numbering.with(
-      first-level: n => [#appendix-label],
-      depth: 4,
-      "A.1 ",
-    )
-  } else {
-    custom-numbering.with(
-      first-level: n => [#appendix-label#numbering("A", n)],
-      depth: 4,
-      "A.1 ",
-    )
-  })
+  set heading(numbering: custom-numbering.with(
+    first-level: if doctype == "bachelor" {
+      n => [#appendix-label]
+    } else {
+      n => [#appendix-label#numbering("A", n)]
+    },
+    depth: 4,
+    "A.1 ",
+  ))
   counter(heading).update(0)
 
   let is-graduate = doctype == "graduate"
 
   show: captab-style.with(numbering-format: "A-1", use-chapter: true)
   show: capfig-style.with(numbering-format: "A-1", use-chapter: true)
-  let figure-show-handler = i-figured.show-figure.with(numbering: "A-1")
-  show figure: it => {
-    if it.kind == image or (is-graduate and it.kind == table) {
-      it
-    } else {
-      figure-show-handler(it)
-    }
-  }
-  show math.equation.where(block: true): if doctype == "bachelor" {
-    i-figured.show-equation.with(
-      numbering: (..nums) => {
-        let eq-number = numbering("A-1", ..nums)
-        [（#eq-number）]
-      },
-    )
-  } else {
-    i-figured.show-equation.with(
-      numbering: "(A-1)",
-    )
-  }
+  show figure: figure-show-rule("A-1", is-graduate, leading)
+  show math.equation.where(block: true): show-equation-handler("A-1", is-graduate)
 
   it
 }

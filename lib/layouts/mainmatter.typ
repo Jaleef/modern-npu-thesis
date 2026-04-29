@@ -1,7 +1,7 @@
 #import "@preview/i-figured:0.2.4"
 #import "@preview/cap-able:0.0.2": captab-style, capfig-style
 #import "../utils/style.typ": 字体, 字号
-#import "../utils/custom-numbering.typ": custom-numbering
+#import "../utils/custom-numbering.typ": custom-numbering, show-equation-handler, figure-show-rule
 #import "../utils/custom-heading.typ": active-heading, heading-display
 #import "../utils/unpairs.typ": unpairs
 #import "../utils/chinese-number.typ": chinese-chapter-number
@@ -17,19 +17,16 @@
   leading: body-format.bachelor.leading,
   spacing: body-format.bachelor.spacing,
   justify: true,
-  first-line-indent: auto,
-  heading-numbering: auto,
+  first-line-indent: body-format.bachelor.first-line-indent,
+  heading-numbering: none,
   // 标题字体与字号
-  heading-font: auto,
+  heading-font: (字体.黑体,),
   heading-size: (字号.三号, 字号.四号, 字号.小四),
   heading-weight: ("regular", "regular", "regular"),
   heading_leading: heading-format.bachelor.leading,
   heading-above: heading-format.bachelor.above,
   heading-below: heading-format.bachelor.below,
-  heading-pagebreak: (true, false, false),
-  heading-align: (center, auto, auto),
   // 页眉
-  display-header: false,
   stroke-width: 0.5pt,
   reset-footnote: true,
   graduate_headsep: header-format.graduate.headsep,
@@ -49,48 +46,7 @@
 ) = {
   let is-graduate = doctype == "graduate"
   let table-kinds = (table, "i-figured-table")
-  let show-equation-handler = if is-graduate {
-    i-figured.show-equation.with(
-      numbering: (..nums) => numbering("(1-1)", ..nums),
-    )
-  } else {
-    i-figured.show-equation.with(
-      numbering: (..nums) => [（#numbering("1-1", ..nums)）],
-    )
-  }
-  if first-line-indent == auto {
-    first-line-indent = if is-graduate {
-      body-format.graduate.first-line-indent
-    } else {
-      body-format.bachelor.first-line-indent
-    }
-  }
-  if heading-numbering == auto {
-    heading-numbering = if english-writing {
-      custom-numbering.with(
-        first-level: n => [Chapter #n#h(0.7em)],
-        depth: 4,
-        "1.1 ",
-      )
-    } else if is-graduate {
-      custom-numbering.with(
-        first-level: n => [第 #n 章#h(0.7em)],
-        depth: 4,
-        "1.1 ",
-      )
-    } else {
-      custom-numbering.with(
-        first-level: n => [第#chinese-chapter-number(n)章　],
-        depth: 4,
-        "1.1 ",
-      )
-    }
-  }
-  let bachelor-figure-gap = 字号.小四 + leading
-  // 1.1 字体与字号
-  if heading-font == auto {
-    heading-font = (字体.黑体,)
-  }
+  let equation-handler = show-equation-handler("1-1", is-graduate)
 
   // 重置页码为阿拉伯数字从1开始（由调用方在正文开始位置处理 pagebreak 和 counter reset）
   set page(
@@ -122,29 +78,13 @@
   )
   // 4.2 设置 figure 的编号
   show heading: i-figured.reset-counters
-  let figure-show-handler = i-figured.show-figure.with(numbering: "1-1")
-  show figure: it => {
-    // 研究生跳过表格和图片类 figure，由 cap-able 处理编号
-    if is-graduate and (it.kind == table or it.kind == image) {
-      it
-    } else if it.kind == image {
-      // 本科图片也由 cap-able 的 capfig() 处理编号
-      it
-    } else {
-      let rendered = figure-show-handler(it)
-      if is-graduate {
-        rendered
-      } else {
-        block(above: bachelor-figure-gap, below: bachelor-figure-gap)[#rendered]
-      }
-    }
-  }
+  show figure: figure-show-rule("1-1", is-graduate, leading)
   set figure(supplement: if english-writing { [Figure] } else { [图] })
   show figure.where(kind: table): set figure(supplement: if english-writing { [Table] } else { [表] })
   show figure.where(kind: "i-figured-table"): set figure(supplement: if english-writing { [Table] } else { [表] })
   // 4.4 设置 equation 的编号和假段落首行缩进
   set math.equation(supplement: if english-writing { [Equation] } else { [式] })
-  show math.equation.where(block: true): show-equation-handler
+  show math.equation.where(block: true): equation-handler
   // 4.5 表格表头置顶 + 不用冒号用空格分割 + 样式
   show figure.where(
     kind: table,
@@ -195,28 +135,17 @@
     )
     set par(leading: array-at(heading_leading, it.level), spacing: 0pt)
 
-    // 所有符合 heading-pagebreak 配置的一级标题统一换页（包括无编号标题）
-    let needs-pagebreak = false
-    if array-at(heading-pagebreak, it.level) {
-      if "label" not in it.fields() or str(it.label) != "no-auto-pagebreak" {
-        needs-pagebreak = true
-      }
-    }
-
-    if needs-pagebreak {
-      if it.level == 1 {
-        pagebreak(weak: true, to: if twoside { "odd" })
-      } else {
-        pagebreak(weak: true)
-      }
+    // 一级标题统一换页
+    if it.level == 1 {
+      pagebreak(weak: true, to: if twoside { "odd" })
       v(array-at(heading-above, it.level))
     }
 
-    let current-block-above = if needs-pagebreak { 0pt } else { array-at(heading-above, it.level) }
+    let current-block-above = if it.level == 1 { 0pt } else { array-at(heading-above, it.level) }
     let current-block-below = array-at(heading-below, it.level)
 
-    if array-at(heading-align, it.level) != auto {
-      set align(array-at(heading-align, it.level))
+    if it.level == 1 {
+      set align(center)
       set block(above: current-block-above, below: current-block-below)
       it
     } else {
@@ -226,49 +155,34 @@
   }
 
   // 6.  处理页眉
-  set page(..(
-    if display-header {
-      (
-        header: context {
-          // 重置 footnote 计数器
-          if reset-footnote {
-            counter(footnote).update(0)
-          }
-          let loc = here()
-          // 页眉内容
-          let header-content = if twoside and calc.rem(loc.page(), 2) == 0 and is-graduate {
-            // 偶数页：显示论文标题
-            graduate-header-title(doctype)
-          } else {
-            // 奇数页或单面打印：显示当前章标题
-            heading-display(active-heading(level: 1, prev: false))
-          }
-          // 使用统一的页眉格式
-          if is-graduate {
-            header-render(
-              header-content,
-              graduate_headsep: graduate_headsep,
-              graduate_headrule_offset: graduate_headrule_offset,
-              graduate_headrule_thick: graduate_headrule_thick,
-              graduate_headrule_thin: graduate_headrule_thin,
-              graduate_headrule_gap: graduate_headrule_gap,
-            )
-          } else {
-            bachelor-header-render(offset: header-format.bachelor.offset)
-          }
-        },
+  set page(header: context {
+    // 重置 footnote 计数器
+    if reset-footnote {
+      counter(footnote).update(0)
+    }
+    let loc = here()
+    // 页眉内容
+    let header-content = if twoside and calc.rem(loc.page(), 2) == 0 and is-graduate {
+      // 偶数页：显示论文标题
+      graduate-header-title(doctype)
+    } else {
+      // 奇数页或单面打印：显示当前章标题
+      heading-display(active-heading(level: 1, prev: false))
+    }
+    // 使用统一的页眉格式
+    if is-graduate {
+      header-render(
+        header-content,
+        graduate_headsep: graduate_headsep,
+        graduate_headrule_offset: graduate_headrule_offset,
+        graduate_headrule_thick: graduate_headrule_thick,
+        graduate_headrule_thin: graduate_headrule_thin,
+        graduate_headrule_gap: graduate_headrule_gap,
       )
     } else {
-      (
-        header: {
-          // 重置 footnote 计数器
-          if reset-footnote {
-            counter(footnote).update(0)
-          }
-        },
-      )
+      bachelor-header-render(offset: header-format.bachelor.offset)
     }
-  ))
+  })
 
   // 研究生使用 cap-able 配置三线表全局样式
   if is-graduate {

@@ -12,6 +12,8 @@
 #import "pages/references.typ": bilingual-bibliography
 #import "@preview/cap-able:0.0.2": capfig, capfig-style, capsubfig, captab, captab-style, captnote
 #import "format.typ": body-format, header-format, heading-format
+#import "utils/custom-numbering.typ": custom-numbering
+#import "utils/chinese-number.typ": chinese-chapter-number
 
 #let default-bibliography(doctype) = {
   if doctype == "bachelor" {
@@ -137,9 +139,20 @@
     twoside: is-graduate,
     doctype: doctype,
     english-writing: english-writing,
-    heading-pagebreak: (true, false, false),
     leading: if is-graduate { body-format.graduate.leading } else { body-format.bachelor.leading },
     spacing: if is-graduate { body-format.graduate.spacing } else { body-format.bachelor.spacing },
+    first-line-indent: if is-graduate { body-format.graduate.first-line-indent } else { body-format.bachelor.first-line-indent },
+    heading-numbering: custom-numbering.with(
+      first-level: if english-writing {
+        n => [Chapter #n#h(0.7em)]
+      } else if is-graduate {
+        n => [第 #n 章#h(0.7em)]
+      } else {
+        n => [第#chinese-chapter-number(n)章　]
+      },
+      depth: 4,
+      "1.1 ",
+    ),
     heading_leading: if is-graduate { heading-format.graduate.leading } else { heading-format.bachelor.leading },
     heading-above: if is-graduate { heading-format.graduate.above } else { heading-format.bachelor.above },
     heading-below: if is-graduate { heading-format.graduate.below } else { heading-format.bachelor.below },
@@ -234,6 +247,7 @@
       show: appendix-layout.with(
         doctype: doctype,
         english-writing: english-writing,
+        leading: body-format.graduate.leading,
       )
       [
         #heading(level: 1)[]
@@ -269,6 +283,7 @@
       show: appendix-layout.with(
         doctype: doctype,
         english-writing: english-writing,
+        leading: body-format.bachelor.leading,
       )
       [
         #heading(level: 1)[]
@@ -281,12 +296,11 @@
     pagebreak(weak: true, to: "odd")
   }
 
+  // 尾部独立页面（声明、封底）：统一无页眉页脚、无边距
+  set page(margin: 0pt, header: none, footer: none)
+
   if scan-declaration != none and is-graduate {
-    page(
-      margin: 0pt,
-      header: none,
-      footer: none,
-    )[
+    page[
       #scan-declaration
       #box(width: 0pt, height: 0pt)
     ]
@@ -300,18 +314,11 @@
     } else {
       "../template/figures/学硕论文封底.jpg"
     }
-    page(
-      margin: 0pt,
-      header: none,
-      footer: none,
-    )[
+    page[
       #box(width: 0pt, height: 0pt)
     ]
     page(
-      margin: 0pt,
       background: image(bg, width: 100%, height: 100%),
-      header: none,
-      footer: none,
     )[
       #box(width: 1pt, height: 1pt)
     ]
