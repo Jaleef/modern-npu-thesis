@@ -11,7 +11,6 @@
   margin: auto,
   it,
 ) = {
-  // 1.  参数处理
   // 设置页面边距
   let page-margin = if margin == auto {
     if doctype == "graduate" {
@@ -23,12 +22,11 @@
     margin
   }
 
-  // 3.  基本的样式设置
-  // 启用中文伪粗体（模拟 Word 的加粗效果）
   show: show-cn-fakebold
   set text(font: 字体.宋体, size: 字号.小四, lang: lang)
+  set par(leading: 12pt, spacing: 12pt)
   set align(center)
-  set table(stroke: none, align: center + bottom, inset: (x: 0pt, y: 4pt))
+  set table(stroke: none, align: center, inset: (x: 0pt, y: 4pt))
   set page(
     paper: "a4",
     margin: page-margin,
