@@ -1,6 +1,6 @@
 #import "../utils/style.typ": 字体, 字号
 #import "../utils/cover-utils.typ": (
-  datetime-display, datetime-year-month, datetime-year-month-en, info-row, pad-name, title-en-map,
+  datetime-display, datetime-year-month, datetime-year-month-en, info-row, major-en-map, pad-name, title-en-map,
 )
 
 // 研究生封面
@@ -208,6 +208,10 @@
   // ========================================
   // 第三页 - 英文封面
   // ========================================
+  // 自动填充英文学科名（当 major-en 为默认值且 major 在映射表中时）
+  if info.major-en == "XX" and info.major in major-en-map {
+    info.major-en = major-en-map.at(info.major)
+  }
   let supervisor-title-en = title-en-map.at(info.supervisor.at(1, default: "教授"), default: "Professor")
   let degree-title = if degree == "doctor" { "Doctor of " } else { "Master of " }
 

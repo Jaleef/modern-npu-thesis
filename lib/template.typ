@@ -13,7 +13,7 @@
 #import "@preview/cap-able:0.0.2": capfig, capfig-style, capsubfig, captab, captab-style, captnote
 #import "format.typ": body-format, header-format, heading-format
 #import "utils/chinese-number.typ": chinese-chapter-number
-#import "utils/cover-utils.typ": blind-review, major-en-map
+#import "utils/cover-utils.typ": blind-review
 
 #let default-bibliography(doctype) = {
   if doctype == "bachelor" {
@@ -112,12 +112,6 @@
     )
       + info
   )
-
-  // 自动填充英文学科名（当 major-en 为默认值且 major 在映射表中时）
-  if major-en == "XX" and major in major-en-map {
-    info.at("major-en", default: none)
-    info.major-en = major-en-map.at(major)
-  }
 
   // 1. 文稿设置
   show: doc.with(doctype: doctype, graduate_header_ascent: header-format.graduate.ascent)
