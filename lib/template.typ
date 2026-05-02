@@ -50,14 +50,11 @@
   school-code: "10699",
   reviewers: (
     (name: "", title: "", unit: ""),
-    (name: "", title: "", unit: ""),
   ),
   defence-committee: (
     date: datetime.today(),
     chairman: (name: "", title: "", unit: ""),
     members: (
-      (name: "", title: "", unit: ""),
-      (name: "", title: "", unit: ""),
       (name: "", title: "", unit: ""),
       (name: "", title: "", unit: ""),
     ),

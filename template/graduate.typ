@@ -10,7 +10,7 @@
   english-writing: false, // 是否用英文写作（国际研究生论文）
   colored-cover: true, // 是否启用彩色封面
   title: ("基于 Typst 的", "西北工业大学论文模板"),
-  title-en: "First Line \nSecond Line",
+  title-en: "This is a Northwestern Polytechnical University thesis template based on Typst",
   student-id: "2023123456",
   class-no: "TP311.1",
   author: "航小天",

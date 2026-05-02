@@ -12,8 +12,6 @@
   anonymous: false,
   info: (:),
 ) = {
-  let min-title-lines = 2
-
   let defence-info-inset = (x: 0pt, bottom: 0pt)
   let defence-info-key-width = 110pt
   let defence-info-column-gutter = 2pt
@@ -28,15 +26,10 @@
     "reviewer",
   )
   // 对参数进行处理
-  // 2.1 如果是字符串，则使用换行符将标题分隔为列表
+  // 确保 title 为数组
   if type(info.title) == str {
-    info.title = info.title.split("\n")
+    info.title = (info.title,)
   }
-  if type(info.title-en) == str {
-    info.title-en = info.title-en.split("\n")
-  }
-  // 2.2 根据 min-title-lines 填充标题
-  info.title = info.title + range(min-title-lines - info.title.len()).map(it => "　")
 
   // 3.  内置辅助函数
   let anonymous-text(key, body) = {
@@ -220,12 +213,8 @@
   text(size: 字号.二号, weight: "bold")[Title: ]
 
   text(size: 字号.三号)[
-    #text(info.title-en.at(0, default: ""))
-    #for line in info.title-en.slice(1) [
-      #linebreak()
-      #text(line)
-    ]
-    #v((if info.title-en.len() >= 2 { 56pt } else { 75pt }))
+    #text(info.title-en)
+    #v(65pt)
   ]
 
   text(size: 字号.小三)[
