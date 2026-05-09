@@ -1,6 +1,6 @@
 #import "../utils/style.typ": 字体, 字号
 #import "../utils/cover-utils.typ": (
-  datetime-display, datetime-year-month, datetime-year-month-en, info-row, major-en-map, pad-name, title-en-map,
+  datetime-display, datetime-year-month, datetime-year-month-en, info-row, major-en-map, mask-value, pad-name, title-en-map,
 )
 
 // 研究生封面
@@ -21,19 +21,9 @@
     "chairman",
     "reviewer",
   )
-  // 对参数进行处理
-  // 确保 title 为数组
-  if type(info.title) == str {
-    info.title = (info.title,)
-  }
-
-  // 3.  内置辅助函数
+  // 内置辅助函数
   let anonymous-text(key, body) = {
-    if anonymous and (key in anonymous-info-keys) {
-      "██████████"
-    } else {
-      body
-    }
+    mask-value(body, anonymous: anonymous and (key in anonymous-info-keys))
   }
 
   // ========================================

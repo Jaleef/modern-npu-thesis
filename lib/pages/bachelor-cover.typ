@@ -1,5 +1,5 @@
 #import "../utils/style.typ": 字体, 字号
-#import "../utils/cover-utils.typ": datetime-year-month, info-row
+#import "../utils/cover-utils.typ": datetime-year-month, info-row, mask-value
 
 // 本科生封面
 #let bachelor-cover(
@@ -7,10 +7,6 @@
   info: (:),
 ) = {
   info.submit-date = datetime-year-month(info.submit-date)
-
-  let mask-value(body) = {
-    if anonymous { "████████" } else { body }
-  }
 
   v(72pt)
   image("../assets/nwpu-logo.png", width: 9cm)
@@ -29,8 +25,8 @@
       columns: (2.2cm, 6.5cm),
       rows: 2.3cm,
       ..info-row([专业名称], info.major),
-      ..info-row([学生姓名], mask-value(info.author)),
-      ..info-row([指导教师], mask-value(info.supervisor.at(0))),
+      ..info-row([学生姓名], mask-value(info.author, anonymous: anonymous)),
+      ..info-row([指导教师], mask-value(info.supervisor.at(0), anonymous: anonymous)),
       ..info-row([毕业时间], info.submit-date),
     )
   ]

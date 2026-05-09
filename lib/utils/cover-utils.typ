@@ -1,5 +1,10 @@
 // 封面共享工具
 
+// 盲审遮盖：匿名时返回遮盖文字，否则原样返回
+#let mask-value(body, anonymous: false) = {
+  if anonymous { "        " } else { body }
+}
+
 // 信息行：标签 + 下划线值（用于封面表格）
 #let info-row(label, value, stroke-width: 0.5pt) = (
   table.cell(align(bottom)[#label]),
