@@ -6,7 +6,7 @@
 
 // 页码渲染函数
 #let page-footer(fmt) = context align(center)[
-  #set text(size: zh(5.5))
+  #set text(zh(5.5))
   #counter(page).display(fmt)
 ]
 
@@ -32,7 +32,7 @@
 #let graduate-header(content) = {
   [
     #set par(spacing: 0pt)
-    #set text(size: zh(5.5))
+    #set text(zh(5.5))
     #align(center)[#content]
     #v(0.5em)
     #line(length: 100%, stroke: 3.2pt)
@@ -45,7 +45,7 @@
 #let bachelor-header() = {
   [
     #set par(spacing: 4pt, first-line-indent: (amount: 6.1em, all: true))
-    #set text(size: zh(3), weight: "bold")
+    #set text(zh(3), weight: "bold")
     #box(width: 2.99cm, height: 0.61cm, move(dy: 0.1em, image("../assets/nwpu-name.png")))#h(0.2em)本科毕业设计（论文）
     #line(length: 100%, stroke: 0.8pt)
   ]

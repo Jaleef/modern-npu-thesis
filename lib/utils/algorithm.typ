@@ -30,7 +30,7 @@
     caption: title,
     outlined: false,
     {
-      set text(size: zh(5))
+      set text(zh(5))
       algo-render(
         line-numbers: true,
         line-numbers-format: x => [#x],

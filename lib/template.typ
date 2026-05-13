@@ -14,7 +14,7 @@
 #import "pages/backmatter-page.typ": backmatter-page
 #import "pages/references.typ": bilingual-bibliography
 #import "format.typ": heading-format, line-spacing, page-format
-#import "utils/chinese-number.typ": chinese-chapter-number
+#import "utils/style.typ": chinese-chapter-number
 #import "utils/cover-utils.typ": blind-review, distribute, page-title
 
 #let default-bibliography(graduate) = {
@@ -173,7 +173,7 @@
         title: [*#page-title("outline", graduate: false, english-writing: english-writing)*],
         indent: (0em, 1.8em, 1.3em),
         weight: ("bold", "regular", "regular"),
-        fill: ([#repeat[#text(size: zh(5))[…]]],),
+        fill: ([#repeat[#text(zh(5))[…]]],),
         vspace: (1.25em, 1em),
         gap: (-0.5em, 0.5em),
       )

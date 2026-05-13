@@ -39,7 +39,7 @@
 
     #if funding != none [
       #v(1fr)
-      #text(size: zh(5))[#h(indent)#funding]
+      #text(zh(5))[#h(indent)#funding]
     ]
   ]
 }

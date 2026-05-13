@@ -6,7 +6,7 @@
 )
 
 // 研究生封面
-// 包含：外封（表格形式）、内封（简洁居中）、英文封面、评阅人名单
+// 包含：外封、中文标题页、英文标题页、评阅人名单
 #let master-cover(
   degree: "master",
   track: "academic",
@@ -23,13 +23,13 @@
     "chairman",
     "reviewer",
   )
-  // 内置辅助函数
+
   let anonymous-text(key, body) = {
     mask-value(body, anonymous: anonymous and (key in anonymous-info-keys))
   }
 
   // ========================================
-  // 第一页 - 外封（表格形式）
+  // 第一页 - 外封
   // ========================================
 
   let bg = none
@@ -47,7 +47,7 @@
 
   // 右上角元信息表格（学校代码、分类号、密级、学号）
   align(right)[
-    #set text(font: 字体.黑体混排, size: zh(5), weight: "bold")
+    #set text(zh(5), font: 字体.黑体混排, weight: "bold")
     #table(
       columns: (2.05cm, 2.4cm),
       rows: 0.55cm,
@@ -62,7 +62,7 @@
 
   v(231pt)
 
-  text(font: 字体.黑体混排, size: zh(2), weight: "bold")[
+  text(zh(2), font: 字体.黑体混排, weight: "bold")[
     #table(
       columns: (2.34cm, 12.13cm),
       rows: (1.45cm, 1.45cm),
@@ -73,14 +73,14 @@
 
   v(21pt)
 
-  // 作者（一行两列表格，只保留第二列下框线）
+  // 作者
   context {
     let author-display = anonymous-text("author", info.author)
     let author-width = calc.max(
       3.72cm,
-      measure(text(size: zh(3), weight: "bold", author-display)).width,
+      measure(text(zh(3), weight: "bold", author-display)).width,
     )
-    set text(size: zh(3), weight: "bold")
+    set text(zh(3), weight: "bold")
     table(
       columns: (1.56cm, author-width),
       rows: 1.28cm,
@@ -92,7 +92,7 @@
 
   let major-label = if track == "professional" { "专业领域" } else { "学科专业" }
 
-  text(size: zh(3), weight: "bold")[
+  text(zh(3), weight: "bold")[
     #table(
       columns: (3.59cm, 9cm),
       rows: (1cm,),
@@ -107,21 +107,21 @@
   ]
 
   // ========================================
-  // 第二页 - 内封（简洁居中形式）
+  // 第二页 - 中文标题页
   // ========================================
   set page(background: none)
   pagebreak(weak: true, to: "odd")
   v(88pt)
-  text(size: zh(3))[
+  text(zh(3))[
     #half-space("西北工业大学")
   ]
   v(10pt)
   let degree-label = if degree == "doctor" { "博士学位论文" } else { "硕士学位论文" }
-  text(size: zh(1))[
+  text(zh(1))[
     #half-space(degree-label)
   ]
   v(140pt)
-  text(size: zh(2))[
+  text(zh(2))[
     #table(
       columns: (2.34cm, 9.13cm),
       rows: (1.45cm, 1.45cm),
@@ -137,11 +137,11 @@
 
   v(94pt)
 
-  text(size: zh(3))[
+  text(zh(3))[
     #context {
       let info-column-width = calc.max(
         5cm,
-        measure(text(size: zh(3), info.major)).width,
+        measure(text(zh(3), info.major)).width,
       )
 
       table(
@@ -160,7 +160,7 @@
   pagebreak(weak: true, to: "odd")
 
   // ========================================
-  // 第三页 - 英文封面
+  // 第三页 - 英文标题页
   // ========================================
 
   let major-en = major-en-map.at(info.major)
@@ -169,14 +169,14 @@
 
   v(95pt)
 
-  text(size: zh(2), weight: "bold")[Title: ]
+  text(zh(2), weight: "bold")[Title: ]
 
-  text(size: zh(3))[
+  text(zh(3))[
     #text(info.title-en)
     #v(65pt)
   ]
 
-  text(size: zh(3.5))[
+  text(zh(3.5))[
     #text(weight: "bold")[By]
     #linebreak()
     #text(anonymous-text("author-en", info.author-en))
@@ -212,10 +212,10 @@
   // 第四页 - 评阅人和答辩委员会名单
   // ========================================
   v(50pt)
-  text(font: 字体.黑体混排, size: zh(3))[学位论文评阅人和答辩委员会名单]
+  text(zh(3), font: 字体.黑体混排)[学位论文评阅人和答辩委员会名单]
   v(40pt)
 
-  text(font: 字体.黑体混排, size: zh(4))[学位论文评阅人名单]
+  text(zh(4), font: 字体.黑体混排)[学位论文评阅人名单]
   table(
     columns: (3.71cm, 2.83cm, 8.73cm),
     inset: (x: 4pt, y: 8pt),
@@ -238,7 +238,7 @@
 
   v(10pt)
 
-  text(font: 字体.黑体混排, size: zh(4))[答辩委员会名单]
+  text(zh(4), font: 字体.黑体混排)[答辩委员会名单]
   table(
     columns: (3.76cm, 2.68cm, 2.25cm, 6.75cm),
     inset: (x: 4pt, y: 8pt),

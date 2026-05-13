@@ -1,7 +1,6 @@
 #import "../deps.typ": cap-style, capfig-style, captab-style, style-algorithm, zh
 #import "../utils/style.typ": 字体
 #import "../utils/custom-numbering.typ": show-equation-handler
-#import "../utils/chinese-number.typ": chinese-chapter-number
 #import "header.typ": page-footer, page-header-footer
 #import "../format.typ": caption-format, line-spacing
 
@@ -18,7 +17,7 @@
 ) = {
   // 算法三线表样式
   show: style-algorithm.with(
-    caption-style: body => text(size: zh(5), strong(body)),
+    caption-style: body => text(zh(5), strong(body)),
     hlines: (
       grid.hline(stroke: 1.5pt + black),
       grid.hline(stroke: 1pt + black),

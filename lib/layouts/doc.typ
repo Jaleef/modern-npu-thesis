@@ -7,7 +7,7 @@
   it,
 ) = {
   show: show-cn-fakebold
-  set text(font: 字体.宋体混排, size: zh(4.5), lang: "zh")
+  set text(zh(4.5), font: 字体.宋体混排, lang: "zh")
   set par(leading: 12pt, spacing: 12pt)
   set align(center)
   set table(stroke: none, align: center, inset: (x: 0pt, y: 4pt))
