@@ -3,14 +3,14 @@
 #import "../utils/custom-numbering.typ": show-equation-handler
 #import "../utils/chinese-number.typ": chinese-chapter-number
 #import "header.typ": bachelor-header-render, graduate-header-title, header-render, page-footer
-#import "../format.typ": body-format, caption-format
+#import "../format.typ": caption-format, line-spacing
 
 #let mainmatter(
   graduate: false,
   degree: "master",
   english-writing: false,
-  leading: body-format.bachelor.leading,
-  spacing: body-format.bachelor.spacing,
+  leading: line-spacing.bachelor,
+  spacing: line-spacing.bachelor,
   heading-above: (),
   heading-below: (),
   heading-numbering: none,

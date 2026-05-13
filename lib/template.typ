@@ -15,7 +15,7 @@
 #import "pages/outline.typ": outline-page
 #import "pages/backmatter-page.typ": backmatter-page
 #import "pages/references.typ": bilingual-bibliography
-#import "format.typ": body-format, heading-format, page-format
+#import "format.typ": heading-format, line-spacing, page-format
 #import "utils/chinese-number.typ": chinese-chapter-number
 #import "utils/cover-utils.typ": blind-review, distribute, page-title
 
@@ -75,7 +75,7 @@
   scan-declaration: none,
   design_summary: none,
   bibliography: none,
-  background: false,
+  background: true,
   // 文档正文
   body,
 ) = {
@@ -127,8 +127,8 @@
     graduate: graduate,
     degree: degree,
     english-writing: english-writing,
-    leading: if graduate { body-format.graduate.leading } else { body-format.bachelor.leading },
-    spacing: if graduate { body-format.graduate.spacing } else { body-format.bachelor.spacing },
+    leading: if graduate { line-spacing.graduate } else { line-spacing.bachelor },
+    spacing: if graduate { line-spacing.graduate } else { line-spacing.bachelor },
     heading-above: if graduate { heading-format.graduate.above } else { heading-format.bachelor.above },
     heading-below: if graduate { heading-format.graduate.below } else { heading-format.bachelor.below },
     heading-numbering: (..nums) => {

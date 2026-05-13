@@ -22,15 +22,9 @@
 // =========================================================
 // 2. 正文格式
 // =========================================================
-#let body-format = (
-  graduate: (
-    leading: 12pt,
-    spacing: 12pt,
-  ),
-  bachelor: (
-    leading: 11pt,
-    spacing: 11pt,
-  ),
+#let line-spacing = (
+  graduate: 12pt,
+  bachelor: 11pt,
 )
 
 // =========================================================
@@ -44,8 +38,8 @@
     below: (16pt, 0pt, 0pt),
   ),
   bachelor: (
-    above: (16pt, 0pt, 0pt),
-    below: (16pt, 2pt, 0pt),
+    above: (20pt, 0pt, 0pt),
+    below: (24pt, 2pt, 0pt),
   ),
 )
 
