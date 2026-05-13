@@ -211,14 +211,19 @@
         outline-content
       }
     } else {
-      outline-page(
+      let outline-content = outline-page(
         title: [*#page-title("outline", graduate: false, english-writing: english-writing)*],
-        indent: (0pt, 24pt, 18pt),
+        indent: (0em, 1.8em, 1.3em),
         weight: ("bold", "regular", "regular"),
-        fill: (repeat([#move(dy: -0.1em, text(size: 0.4em)[·])], gap: -0.1em),),
-        vspace: (1.5em, 1em),
+        fill: ([#repeat[#text(size: zh(5))[…]]],),
+        vspace: (1.25em, 1em),
         gap: (-0.5em, 0.5em),
       )
+      if background {
+        page(background: image("../template/duibi/bachelor_outline.pdf", width: 100%, height: 100%))[#outline-content]
+      } else {
+        outline-content
+      }
     }
 
     #if graduate {
