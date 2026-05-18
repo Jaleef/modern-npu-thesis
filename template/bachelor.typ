@@ -5,36 +5,74 @@
 #show: nwpu-thesis.with(
   anonymous: false, // 是否开启盲审模式
   info: (
-    title: ("基于Typst的西工大论文模板", "长标题支持"),
-    author: "航小天",
+    title: ("分布式键值存储系统的研究与实现"),
     major: "计算机科学与技术",
-    supervisor: ("张三", "教授"),
-    submit-date: (year: 2026, month: 3),
+    author: "闫佳乐",
+    supervisor: ("谷建华", "教授"),
+    submit-date: (year: 2026, month: 6),
   ),
   abstract: (
     content: [
-      听觉虚拟又可称为可听化，是近年来随着声学仿真技术的发展而出现的新概念，即通过对包含单个（或多个）声源的声场进行物理或数学建模，以达到模拟空间听音效果的目的。若考虑双耳效应，则可称为双耳听觉虚拟（Binaural Modeling）。
+      随着互联网数据规模的爆发式增长，传统的单机键值存储系统在数据容量和读写吞吐量方面面临严峻的挑战，如果一昧的增加单机容量和性能，成本将呈现指数级增长。
+      而分布式键值存储系统则通过数据分片和多节点部署有效解决了这一问题，但现有开源系统（如 Redis Cluster，TiKV）架构复杂、学习门槛高，不利于教学和研究使用。
+      本文针对该应用场景，设计并实现了一个轻量级分布式键值存储系统LEKV。
+      
+      本文的主要工作内容包括:
+      #enum(
+        indent: 2em,    // 序号块左缩进
+        body-indent: 0.5em, // 序号块内文本缩进
+        [系统架构上，采用 Proxy + DataNode 双层架构，Proxy 负责请求路由和负载均衡，DataNode 负责数据存储和查询，简化了系统设计并提高了可维护性],
+        [通信层面上，设计了一套自定义二进制通信协议，包含完整的帧格式定义、操作码规范和粘包处理机制，有效降低了网络传输开销],
+        [存储层面上，系统集成了 LevelDB 作为底层存储引擎，实现了常规的 PUT / GET / DELETE 操作，并实现了 O(logN) 的范围查询与统计能力],
+        [分片与负载均衡上，设计了自适应分片算法，支持动态调整分片数量和数据迁移，保证系统在节点增减时的高可用性和负载均衡],
+      )
 
-      ……
+      该系统在小型集群环境下的优异表现，验证了设计的合理性和实现的有效性，为分布式键值存储系统的教学和研究提供了一个简洁易用的平台。
     ],
-    keywords: ("听觉虚拟", "HRTF", "神经网络"),
+    keywords: ("分布式键值存储", "负载均衡", "LevelDB", "分片算法", "二进制通信协议"),
   ),
   abstract-en: (
     content: [
-      Virtual auditory technology is also called auralization. It is brought forward as a new concept with the development of acoustic simulation techniques in recent years and can be implemented by establishing the physical or mathematical models of a sound field to achieve sound effects simulation. If we consider the binaural effect, it can be called binaural virtual auditory.
+      With the explosive growth of internet data, traditional single-node key-value storage systems face severe challenges in terms of data capacity and read/write throughput.
+      Simply increasing the capacity and performance of single nodes leads to exponential cost growth. Distributed key-value storage systems effectively address this issue through data sharding and multi-node deployment, 
+      but existing open-source systems (e.g., Redis Cluster, TiKV) have complex architectures and high learning curves, 
+      making them less suitable for teaching and research purposes. For this purpose, this paper designs and implements a lightweight distributed key-value storage system called LEKV.
 
-      ……..
+      The main contributions of this paper include:
+      #enum(
+        indent: 2em,
+        body-indent: 0.5em,
+        [On the system architecture, I adopted a Proxy + DataNode dual-layer architecture, where the Proxy is responsible for request routing and load balancing, while DataNode is responsible for data storage and querying,
+        simplifying the system design and improving maintainability],
+        [On the communication layer, I designed a custom binary communication protocol, including a complete frame format definition, opcode specification, and sticky packet handling mechanism, effectively reducing network transmission overhead],
+        [On the storage layer, the system integrates LevelDB as the underlying storage engine, implementing conventional PUT / GET / DELETE operations, and achieving O(logN) range query and statistical capabilities],
+        [On sharding and load balancing, I designed an adaptive sharding algorithm that supports dynamic adjustment of shard count and data migration, ensuring high availability and load balancing when nodes are added or removed],
+      )
+
+      The excellent performance of the system in a small cluster environment validates the rationality of the design and the effectiveness of the implementation, providing a simple and easy-to-use platform for teaching and research on distributed key-value storage systems.
     ],
-    keywords: ("virtual auditory", "HRTF", "neural network"),
+    keywords: ("Distributed Key-Value Storage", "Load Balancing", "LevelDB", "Sharding Algorithm", "Binary Communication Protocol"),
   ),
   appendix: [
-    附录内容……
+    我的个人 github 链接: #link("https://github.com/Jaleef")
+
+    我的项目 gitee 链接: #link("https://gitee.com/undergra-graduation_proj_2026/LeKV")
   ],
   acknowledgement: [
-    致谢内容……
+    在完成本论文的过程中，我得到了很多人的支持与帮助，在此我要表达我最诚挚的感谢。
+    
+    首先，我要感谢我的导师谷建华教授，感谢他在学术上的指导，在我实现该系统的过程中，谷教授一次又一次的给我指出系统设计方向上的问题；我因研究生复试而耽误了做毕业设计，谷教授也非常理解和支持我，帮助我顺利完成了毕业设计的工作。
+    
+    最后，我要感谢我的家人和朋友们，他们一直是我坚强的后盾，给予我无尽的支持和鼓励。
   ],
   design-summary: [
-    小结内容……
+    这个毕业设计让我学到了很多知识。
+    
+    首先是开发一个项目的经验，从前做一个项目时，比如课程大作业，都是直接上手写代码，而这次开发一个分布式系统，必须先进行整体的设计，明确系统的架构、模块划分、接口定义等，这些都是之前没有经历过的。通过这个过程，我学会了如何从整体上把握一个项目，如何进行系统设计和规划。
+
+    其次是分布式系统的相关知识，之前只在课程上接触过数据库、存储相关的知识，而这次毕业设计让我深入了解了专业的分布式系统的架构设计、通信协议、数据存储等方面的知识，尤其是分布式系统中的数据分片、负载均衡等问题，这些都是之前没有接触过的。
+
+    这也是一次重要的实践机会，让我将理论、算法应用到实际的项目中，并锻炼了我的编程能力，对我产生了很深远的影响。
   ],
 )
 
