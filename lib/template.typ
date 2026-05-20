@@ -22,6 +22,14 @@
   }
 }
 
+#let code-frame(body) = block(
+  width: 100%,
+  stroke: 0.6pt + luma(180),
+  radius: 4pt,
+  fill: luma(248),
+  inset: 10pt,
+)[#body]
+
 #let nwpu-thesis(
   graduate: false,
   degree: "master",
@@ -76,6 +84,8 @@
     degree: degree,
     english-writing: english-writing,
   )
+
+  show raw.where(block: true): it => code-frame(it)
 
   // 4. 前置部分（摘要、目录）
   frontmatter[
